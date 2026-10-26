@@ -1,0 +1,241 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NTV Forge — Link Forge v0.5.1</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,'Segoe UI',sans-serif;background:#0b1420;color:#edf7ff}
+*{box-sizing:border-box}body{margin:0}header{background:#101f30;border-bottom:1px solid #304457;padding:25px max(20px,calc((100% - 900px)/2))}
+h1{font-size:30px;letter-spacing:2px;margin:0}h1 span{color:#64e4ce}.muted,small{color:#a9bccd}main{max-width:940px;margin:auto;padding:24px 16px 60px}
+nav{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 24px}nav button{font-size:12px}
+section{background:#152638;border:1px solid #30485e;border-radius:16px;padding:24px;margin:0 0 18px;scroll-margin-top:16px}
+h2{margin:0;font-size:21px}p{line-height:1.55}label{display:block;font-weight:650;margin:18px 0 5px}
+.help{display:block;font-size:13px;color:#aebfd0;margin:0 0 8px;line-height:1.45}
+input,select,textarea{width:100%;padding:12px;background:#0a1827;color:#f3fbff;border:1px solid #42617a;border-radius:8px;font:inherit}
+textarea{min-height:74px}button{border:0;border-radius:9px;padding:11px 14px;font-weight:700;cursor:pointer;background:#61e5cf;color:#10252b}
+button.secondary{background:#2b455d;color:#e9f3fa}button.danger{background:#6c3c49;color:white}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.item{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#20354a;border-radius:10px;padding:13px;margin:9px 0;overflow-wrap:anywhere}
+.item .actions{margin:0}.pill{color:#71e9d6;font-size:12px}.stephead{display:flex;gap:14px;align-items:center}
+.num{background:#264e55;color:#6deed6;border-radius:11px;padding:12px 16px;font-weight:800;font-size:20px}
+.tip{border-left:3px solid #60dec9;background:#102131;padding:12px;margin:15px 0;border-radius:4px;color:#c1d1df;font-size:13px}
+#notice{color:#ffd08d;white-space:pre-wrap;margin-top:15px}.subheading{margin-top:26px;border-top:1px solid #344c60;padding-top:17px}
+@media(max-width:600px){section{padding:16px}.item{display:block}.item .actions{margin-top:10px}}
+.source-state{font-weight:750}.source-state.online{color:#60e5a8}.source-state.offline{color:#ff7777}.source-state.archived{color:#78baff}.source-state.unknown{color:#b4c2d2}.source-state.checking{color:#ffd27a}
+/* NTV FORGE v0.5 — RETRO TERMINAL / cassette-futurist visual system */
+:root{color-scheme:dark;--void:#111719;--panel:#243238;--panel-hi:#2b3b40;--screen:#151e20;--steel:#45565a;--cyan:#62d9d1;--amber:#e8a64b;--green:#9bcb79;--ivory:#e8e5d8;--muted:#a7b7b4;--red:#ff7876;--beige:#c3bba6;background:var(--void)!important;color:var(--ivory)!important;font-family:'Segoe UI',Tahoma,system-ui,sans-serif}
+body{background:radial-gradient(ellipse at 50% -40%,#26383b 0%,#111719 62%) fixed!important;color:var(--ivory)!important}
+header{background:linear-gradient(180deg,#2b3839,#1a2528)!important;border-bottom:2px solid #6d7770!important;box-shadow:inset 0 -5px 0 #12191b,0 4px 18px #0005}
+h1,h2,h3{color:var(--ivory)!important}h1{letter-spacing:.105em!important;font-weight:800}h1 span{color:var(--cyan)!important}
+small,.small,.muted,.help,.subtitle,header p{color:var(--muted)!important}
+section{background:linear-gradient(155deg,#29383b,#202d30)!important;border:1px solid var(--steel)!important;border-top:3px solid #6e7974!important;border-radius:6px!important;box-shadow:inset 0 1px 0 #ffffff10,0 7px 22px #0004}
+label{color:var(--beige)!important;font-size:.88em;letter-spacing:.045em}
+input,select,textarea{background:var(--screen)!important;color:var(--ivory)!important;border:1px solid #61736f!important;border-radius:4px!important;box-shadow:inset 0 2px 6px #0005}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--cyan);outline-offset:1px}
+button{background:linear-gradient(180deg,#7be2d7,#4aaea9)!important;color:#10272a!important;border:1px solid #a1e9df!important;border-bottom:3px solid #327a79!important;border-radius:4px!important;box-shadow:inset 0 1px 0 #ffffff66,0 3px 0 #10191b!important;letter-spacing:.035em;transition:filter .15s,transform .15s}
+button:hover{filter:brightness(1.12)}button:active{transform:translateY(2px);box-shadow:inset 0 2px 5px #0006!important}
+button.secondary{background:linear-gradient(180deg,#40545a,#304046)!important;color:var(--ivory)!important;border:1px solid #71837e!important;border-bottom:3px solid #1b272a!important}
+button.danger{background:linear-gradient(180deg,#a65b57,#773b3b)!important;color:#fff!important;border:1px solid #c9867e!important;border-bottom:3px solid #542a2a!important}
+button:focus-visible{outline:2px solid var(--amber)!important;outline-offset:3px}
+.item,.tip,.genre-details{background:#1b292b!important;border:1px solid #40565a!important;border-radius:4px!important}
+.tip{border-left:4px solid var(--amber)!important;color:var(--ivory)!important}
+.num{background:#172c2e!important;color:var(--cyan)!important;border:1px solid #427d79!important;border-radius:4px!important}
+.pill{border-color:#69847b!important;color:var(--cyan)!important}.source-state.online,.status{color:var(--green)!important}.source-state.offline{color:var(--red)!important}.source-state.checking,.warn,#notice,.unsaved{color:var(--amber)!important}.source-state.archived{color:#9ac4df!important}
+table th{background:#24363a!important;color:var(--amber)!important;text-transform:uppercase;letter-spacing:.04em}td,th{border-bottom:1px solid #45575a!important}tr:hover{background:#33484a!important}.selected{background:#345a57!important}
+#forgeToast{background:#24383a!important;color:var(--ivory)!important;border-color:var(--cyan)!important}
+@media(prefers-reduced-motion:reduce){button{transition:none}}
+
+
+/* 0.5.1 / PHOSPHOR CONSOLE — static CSS, no animation or decorative charts */
+:root{--phosphor:#a5e6a1;--readout:#e9b45b;--glass:#112526;--shell:#293234}
+body{background:#111719!important}
+section{border-top:2px solid #78827a!important;background:linear-gradient(145deg,#273335,#1b292c)!important;box-shadow:inset 0 1px #ffffff13,0 3px 10px #0005!important}
+button,button.secondary{background:linear-gradient(180deg,#ffffff21 0%,#b6ded41b 44%,#0a2229c9 100%)!important;color:#c8f4ee!important;border:1px solid #78a8a4!important;border-bottom:3px solid #183e42!important;box-shadow:inset 0 1px #ffffff55,inset 0 -2px 8px #0008,0 2px 3px #0006!important;text-shadow:0 0 7px #62d9d155!important}
+button:not(.secondary):not(.danger){background:linear-gradient(180deg,#c7ffed48 0%,#45988d44 42%,#0b2c30d9 100%)!important;border-color:#7ed6cb!important}
+button.danger{background:linear-gradient(180deg,#fca8a52a,#50272bd9)!important;color:#ffd8d1!important}
+button:hover{filter:brightness(1.18)}button:disabled{opacity:.45;cursor:not-allowed}
+input,select,textarea{background:#0b1b1c!important;border-color:#536d67!important;color:#e5eadc!important}
+.tip,.item,.csv-stats,.rules-panel{background:#142326!important}
+.pill,.source-state.online,.status{color:var(--phosphor)!important;text-shadow:0 0 6px #a5e6a13a}
+#notice,.source-state.checking,.warn{color:var(--readout)!important}
+.terminal-meter{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:9px;margin:14px 0 20px}
+.terminal-readout{min-width:0;background:#0b1b1a;border:1px solid #506760;border-top:2px solid #829185;border-radius:3px;padding:11px 13px;box-shadow:inset 0 3px 9px #0008}
+.terminal-readout .readout-label{display:block;color:#b5b5a4;font:700 10px Consolas,monospace;letter-spacing:.1em;margin-bottom:6px}
+.terminal-readout output{display:block;color:var(--phosphor);font:700 20px Consolas,monospace;text-shadow:0 0 9px #a5e6a144;overflow-wrap:anywhere}
+.terminal-readout.amber output{color:var(--readout);text-shadow:0 0 9px #e9b45b55}
+.terminal-readout.red output{color:#ff8780;text-shadow:0 0 9px #ff878044}
+.terminal-readout .readout-caption{font:11px Consolas,monospace;color:#a4b6af;margin-top:5px}
+@media(prefers-reduced-motion:reduce){button{transition:none!important}}
+
+/* 0.5.2 / IVORY HARDWARE KEYS — no images, timers, or animation loops */
+:root{--key-ivory:#e4dfcb;--key-highlight:#fffdf0;--key-shadow:#999b8d;--key-ink:#263432}
+/* Large navigation and action buttons only; compact row controls remain dark */
+nav button, .actions > button:not(.danger), .flex > div > button:not(.danger), #exportBtn {
+ background:linear-gradient(180deg,#fffef1ed 0%,#e4dfcbf0 46%,#b7b9a9f2 100%)!important;
+ color:var(--key-ink)!important;
+ text-shadow:none!important;
+ border:1px solid #fbf7e0!important;
+ border-bottom:4px solid #7f887f!important;
+ border-right:3px solid #a1a79a!important;
+ border-radius:5px!important;
+ box-shadow:inset 0 2px 1px #fffdf0b0,inset 0 -3px 5px #6e76673d,0 3px 0 #101918,0 5px 7px #0006!important;
+ font-weight:800!important;letter-spacing:.055em!important;
+}
+nav button:hover, .actions > button:not(.danger):hover, .flex > div > button:not(.danger):hover{filter:brightness(1.09)!important}
+nav button:active, .actions > button:not(.danger):active, .flex > div > button:not(.danger):active{transform:translateY(2px)!important;border-bottom-width:2px!important}
+nav button[aria-selected=true],nav button.active{background:linear-gradient(180deg,#e3f4d5,#a9d2aa 60%,#789f84)!important;border-color:#e1f6d2!important;color:#173a2c!important}
+/* Destructive operations stay visually distinct */
+button.danger{border-left:3px solid #c87369!important}
+/* No motion for users requesting reduced motion */
+@media(prefers-reduced-motion:reduce){button{transition:none!important}}
+
+
+/* 1.0 — all controls use static, lightweight illuminated keycaps.
+   The warm ivory primary keys are preserved; compact controls get a restrained
+   translucent phosphor glow. No animations, images, or additional polling. */
+button,button.secondary,button.danger {
+  position:relative;
+  background-image:linear-gradient(180deg,rgba(220,255,245,.23) 0%,rgba(93,174,164,.22) 38%,rgba(13,45,48,.95) 100%)!important;
+  color:#e7fff8!important;
+  -webkit-text-fill-color:#e7fff8!important;
+  text-shadow:none!important;
+  border:1px solid #75b6ac!important;
+  border-bottom:3px solid #234a46!important;
+  border-radius:5px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.6),inset 0 0 12px rgba(90,219,194,.18),0 0 7px rgba(98,217,209,.21),0 3px 3px rgba(0,0,0,.5)!important;
+  transition:filter .12s ease,transform .12s ease!important;
+}
+button:hover:not(:disabled){filter:brightness(1.15)!important;box-shadow:inset 0 1px 0 #ffffffb0,inset 0 0 14px #62d9d155,0 0 11px #62d9d166,0 3px 3px #0009!important}
+button:active:not(:disabled){transform:translateY(2px);border-bottom-width:1px!important}
+button:focus-visible{outline:2px solid #f3c37d!important;outline-offset:3px!important}
+button:disabled{opacity:.5!important;cursor:not-allowed!important;filter:none!important}
+button.danger{
+  background-image:linear-gradient(180deg,#e59b963d,#783c4359 45%,#391c23e8)!important;
+  color:#ffe4dc!important;-webkit-text-fill-color:#ffe4dc!important;
+  border-color:#bb726e!important;border-bottom-color:#612b32!important;
+  box-shadow:inset 0 1px #ffd7d57a,inset 0 0 11px #ff686033,0 0 6px #ff686033,0 3px 3px #0008!important;
+}
+button.danger:hover:not(:disabled){box-shadow:inset 0 1px #ffe1de,inset 0 0 13px #ff686066,0 0 11px #ff686066,0 3px 3px #0008!important}
+/* Prominent ivory keys retain dark, high-contrast lettering and warm backlight. */
+
+nav button, .actions > button:not(.danger), .flex > div > button:not(.danger), #exportBtn {
+ background-image:linear-gradient(180deg,#fffdf2,#e7dfc7 48%,#b8b9a5)!important;
+ color:#1b2a26!important;-webkit-text-fill-color:#1b2a26!important;
+ border-color:#fff8dc!important;border-bottom:4px solid #7f887f!important;
+ box-shadow:inset 0 2px #fffef8,inset 0 0 12px #fff3b67a,0 0 8px #e8a64b33,0 3px 3px #0009!important;
+ text-shadow:none!important;
+}
+nav button:hover:not(:disabled), .actions > button:not(.danger):hover:not(:disabled), .flex > div > button:not(.danger):hover:not(:disabled), #exportBtn:hover:not(:disabled){
+ box-shadow:inset 0 2px #fff,inset 0 0 15px #fff3b6b0,0 0 12px #e8a64b66,0 3px 3px #0009!important;
+}
+
+
+/* 1.0: lightweight CRT monitor bezels around workspace sections. */
+main section, section[id^="step"]{
+ border:5px solid #10191b!important;
+ outline:1px solid #63716b;
+ border-radius:15px!important;
+ box-shadow:inset 0 0 0 2px #53615c,inset 0 0 24px rgba(0,0,0,.36),0 3px 0 #050a0b,0 8px 16px rgba(0,0,0,.35)!important;
+ background:linear-gradient(145deg,#273739,#172326)!important;
+}
+.server-test-result{flex:2 1 240px;align-self:center;font-size:.85rem;line-height:1.4;color:#b8c9c2;padding:8px 10px;border-left:3px solid #68817a;background:#111e20;border-radius:3px}
+.server-test-result[data-state="ok"]{color:#a9eab0;border-left-color:#79d48e}
+.server-test-result[data-state="error"]{color:#ffc0ad;border-left-color:#ff7971}
+.server-test-result[data-state="checking"]{color:#f1c780;border-left-color:#e8a64b}
+@media(max-width:650px){main section,section[id^="step"]{border-width:3px!important;border-radius:9px!important}}
+
+/* 1.0: unified terminal-key lettering. Visual-only adjustment. */
+button, input[type="button"], input[type="submit"], .csv-picker-button {
+  font-family:Consolas,"Lucida Console","Courier New",monospace!important;
+  font-weight:600!important;
+  letter-spacing:.085em!important;
+  line-height:1.35!important;
+  text-shadow:none!important;
+}
+nav button, .actions > button, .flex > div > button, #exportBtn, .csv-picker-button {
+  font-size:14px!important;
+}
+/* Keep long labels readable and prevent letter spacing from clipping them. */
+button, .csv-picker-button {white-space:normal; overflow-wrap:break-word;}
+
+</style></head><body><header><h1>⛓ LINK <span>FORGE</span></h1><small>CHANNEL WORKSHOP · VERSION 0.5.4 NATIVE RESOLUTION TEST · NOSTALGIATV COMPANION</small></header>
+<main><div class="terminal-meter" aria-label="Live source diagnostics"><div class="terminal-readout"><span class="readout-label">SOURCE MONITOR / AVAILABLE</span><output id="meterAvailable">—</output><div class="readout-caption">Verified playable or archived</div></div><div class="terminal-readout amber"><span class="readout-label">SOURCE MONITOR / UNVERIFIED</span><output id="meterUnknown">—</output><div class="readout-caption">Pending or inconclusive checks</div></div><div class="terminal-readout red"><span class="readout-label">SOURCE MONITOR / OFFLINE</span><output id="meterOffline">—</output><div class="readout-caption">Unavailable sources</div></div><div class="terminal-readout amber"><span class="readout-label">M3U / EXPORTED</span><output id="meterExport">—</output><div class="readout-caption">Actual playlist entries</div></div></div><p class="muted">Build a channel from a direct stream, Twitch, YouTube video, livestream, or YouTube playlist, then connect it to NostalgiaTV. Follow these steps in order. Your channels are saved on this PC. Fresh installations start empty; restore a JSON backup to bring back your lineup.</p>
+<nav><button class="secondary" onclick="goStep(1)">1 · Source</button><button class="secondary" onclick="goStep(2)">2 · Channel</button><button class="secondary" onclick="goStep(3)">3 · Review</button><button class="secondary" onclick="goStep(4)">4 · Connect NTV</button><button class="secondary" onclick="goStep(5)">5 · Backup</button></nav>
+<section id="step1"><div class="stephead"><span class="num">01</span><h2>Add a video source</h2></div>
+<p class="muted">First, tell Link Forge where the video lives. You can reuse one source for multiple channels.</p>
+<label for="sname">Source name</label><span class="help">An internal name to help you recognize this source when assigning it to a channel. Example: “Vintage Commercials — YouTube playlist.” Viewers see the channel name, not this label.</span><input id="sname" placeholder="Vintage Commercials — YouTube playlist">
+<label for="surl">Video or playlist URL</label><span class="help">Paste the full HTTP(S) link to a Twitch channel, individual YouTube video, YouTube livestream, YouTube playlist, or direct MP4/TS/HLS stream. YouTube and Twitch need the installed extraction tools; Link Forge resolves and relays them when NTV tunes in.</span><input id="surl" type="url" placeholder="https://www.youtube.com/playlist?list=...">
+<div class="tip">Detected type: <strong id="stype">Enter a URL to classify it.</strong><div>Detection checks the URL format, not whether the stream actually plays.</div></div>
+<div class="actions"><button onclick="saveSource()">Save source</button><button class="secondary" onclick="clearSource()">Clear fields</button></div>
+<h3 class="subheading">Saved sources</h3><div id="sources"></div></section>
+<section id="step2"><div class="stephead"><span class="num">02</span><h2>Create a channel</h2></div>
+<p class="muted">Name your channel and select a source saved in Step 1.</p>
+
+<label for="cname">Channel name</label><span class="help">The on-screen station name that appears in the NostalgiaTV channel list and M3U guide, e.g. “Vintage Commercial Breaks.”</span><input id="cname" placeholder="Vintage Commercial Breaks">
+<label for="cdesc">Description (optional)</label><span class="help">Optional notes about the channel’s content or purpose. Saved in the project backup; the current M3U export does not include this description.</span><textarea id="cdesc" placeholder="A rotating lineup of vintage television commercials."></textarea>
+<label for="csource">Assigned source</label><span class="help">Choose which saved source this station plays. The channel will be omitted from the M3U if the source is missing or its URL format is unsupported.</span><select id="csource"></select>
+<div class="actions"><button onclick="saveChannel()">Save channel</button><button class="secondary" onclick="clearChannel()">Clear fields</button></div></section>
+<section id="step3"><div class="stephead"><span class="num">03</span><h2>Review your lineup</h2></div><p class="muted">Review your channels and their assigned sources before connecting to NTV. Source availability is checked automatically. You can also refresh an individual source.</p><div id="channels"></div><div class="actions"></div></section>
+<section id="step4"><div class="stephead"><span class="num">04</span><h2>Connect to NostalgiaTV</h2></div>
+<p class="muted">Keep the Link Forge launcher window running. NTV reads these links from your PC over the local network.</p>
+<div class="tip" id="connection">● Checking local server…</div>
+<label for="ipselect">Windows PC LAN address</label><span class="help">Choose the address that NTV can reach. For your home network this will usually start with 192.168. If you have VPNs or multiple adapters, test the choices.</span><select id="ipselect" onchange="setFeedIP(this.value)"><option value="PC-IP">Detecting network…</option></select>
+<label for="feedm3u">M3U playlist link</label><span class="help">Copy this into NTV → Configure → HDHR / XMLTV Sources → Add Source → M3U URL. Do not paste it into a single channel's Stream URL field.</span><input id="feedm3u" readonly value="http://PC-IP:8765/channels.m3u">
+<div class="actions"><button onclick="copyFeed('feedm3u')">Copy M3U URL</button></div>
+<label for="feedxml">XMLTV guide link (optional)</label><span class="help">Contains channel definitions, but currently no program schedule. NTV may report 0 programmes; that's expected for this build.</span><input id="feedxml" readonly value="http://PC-IP:8765/guide.xml">
+<div class="actions"><button class="secondary" onclick="copyFeed('feedxml')">Copy XMLTV URL</button><button class="secondary" onclick="checkFeeds(true)">Test local server</button><span id="serverTestResult" class="server-test-result" role="status" aria-live="polite">Checks the M3U endpoint; does not test playback.</span></div>
+<div class="tip">NTV: Leave Base URL empty if using the M3U URL. If NTV asks for a channel-number offset, choose a value that avoids conflicts with your other channels (e.g. 3000). YouTube playlists play sequentially through a local FFmpeg relay. No scheduling or guide programmes are generated.</div>
+<div class="actions"></div></section>
+<section id="step5"><div class="stephead"><span class="num">05</span><h2>Save, back up & export</h2></div><p class="muted">Changes save to the Link Forge server automatically. Back up the project before installing a newer version. File exports are optional; NTV normally uses the live URLs in Step 4.</p>
+<div class="actions"><button onclick="exportJSON()">Download project backup</button><button class="secondary" onclick="document.getElementById('importfile').click()">Restore JSON backup</button><button class="secondary" onclick="exportM3U()">Download M3U file</button><button class="secondary" onclick="exportXML()">Download XMLTV file</button></div>
+<input id="importfile" type="file" accept=".json,application/json" hidden onchange="importJSON(event)">
+<div id="notice" role="status" aria-live="polite"></div></section>
+</main><script>
+let data={sources:[],channels:[]},editS=null,editC=null;const statusCache=new Map();let checkRun=0;
+const el=id=>document.getElementById(id),val=id=>el(id).value.trim(),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function kind(url){try{let u=new URL(url);if(!['http:','https:'].includes(u.protocol))return 'Unsupported';let h=u.hostname.toLowerCase(),p=u.pathname.toLowerCase();if(h==='youtube.com'||h.endsWith('.youtube.com')||h==='youtu.be')return u.searchParams.has('list')||p.startsWith('/playlist')?'YouTube playlist':'YouTube video/live';if(h==='twitch.tv'||h.endsWith('.twitch.tv'))return 'Twitch live';if(/\.m3u8$/.test(p))return 'HLS stream';if(/\.(mp4|ts)$/.test(p))return 'Direct media';if(/\.m3u$/.test(p))return 'M3U playlist (import not yet supported)';return 'Unknown / verify stream'}catch{return 'Invalid URL'}}
+function playable(s){return s&&['HLS stream','Direct media','Twitch live','YouTube video/live','YouTube playlist'].includes(kind(s.url))}
+async function persist(){render();try{let r=await fetch('/api/project',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});if(!r.ok)throw Error(await r.text());await checkFeeds();refreshAllStatuses()}catch(e){notice('Could not save changes. Make sure the Link Forge window is still running. Details: '+e.message)}}
+function notice(s){el('notice').textContent=s;/* No automatic scrolling */}
+el('surl').addEventListener('input',()=>el('stype').textContent=kind(val('surl')));
+function clearSource(){editS=null;el('sname').value=el('surl').value='';el('stype').textContent='Enter a URL to classify it.'}
+function saveSource(){let name=val('sname'),url=val('surl');if(!name||kind(url)==='Invalid URL'||kind(url)==='Unsupported'){notice('Enter a source name and valid HTTP(S) URL.');return}
+let id=editS||crypto.randomUUID();let s={id,name,url};let i=data.sources.findIndex(x=>x.id===id);if(i>=0)data.sources[i]=s;else data.sources.push(s);clearSource();notice('Source saved.');persist()}
+function editSource(id){let s=data.sources.find(x=>x.id===id);if(!s)return;editS=id;el('sname').value=s.name;el('surl').value=s.url;el('stype').textContent=kind(s.url);/* No forced scroll when editing */}
+function removeSource(id){if(!confirm('Remove this source? Channels using it will become unassigned.'))return;data.sources=data.sources.filter(x=>x.id!==id);persist()}
+function clearChannel(){editC=null;['cname','cdesc'].forEach(x=>el(x).value='');el('csource').value=''}
+function nextChannelNumber(channels){const used=new Set(channels.map(c=>String(c.number)));let n=1;while(used.has(String(n)))n++;return String(n)}
+function saveChannel(){let existing=editC?data.channels.find(c=>c.id===editC):null;let number=existing?String(existing.number):nextChannelNumber(data.channels),name=val('cname'),description=val('cdesc'),sourceId=val('csource');if(!name){notice('Enter a channel name.');return}if(data.channels.some(c=>String(c.number)===number&&c.id!==editC)){notice('This backup has a duplicate channel number. Restore a corrected backup before editing.');return}let id=editC||crypto.randomUUID(),c={id,number,name,description,sourceId};let i=data.channels.findIndex(x=>x.id===id);if(i>=0)data.channels[i]=c;else data.channels.push(c);clearChannel();notice('Channel saved.');persist()}
+function editChannel(id){let c=data.channels.find(x=>x.id===id);if(!c)return;editC=id;el('cname').value=c.name;el('cdesc').value=c.description;el('csource').value=c.sourceId}
+function removeChannel(id){if(!confirm('Delete channel?'))return;data.channels=data.channels.filter(c=>c.id!==id);persist()}
+function moveChannel(id,d){let i=data.channels.findIndex(c=>c.id===id),j=i+d;if(j<0||j>=data.channels.length)return;[data.channels[i],data.channels[j]]=[data.channels[j],data.channels[i]];persist()}
+function render(){const selected=el('csource').value;el('csource').innerHTML='<option value="">— None —</option>'+data.sources.map(s=>`<option value="${esc(s.id)}">${esc(s.name)}</option>`).join('');el('csource').value=selected;
+el('sources').innerHTML=data.sources.map(s=>`<div class="item"><div><b>${esc(s.name)}</b><div class="pill">${esc(kind(s.url))} · <span id="status-${esc(s.id)}" class="source-state">Checking…</span></div><small>${esc(s.url)}</small></div><div class="actions"><button class="secondary" onclick="checkSource('${s.id}')">↻ Refresh</button><button class="secondary" onclick="editSource('${s.id}')">Edit</button><button class="danger" onclick="removeSource('${s.id}')">×</button></div></div>`).join('');
+for(const [id,result] of statusCache){paintStatus(id,result)}
+el('channels').innerHTML=data.channels.map(c=>{let s=data.sources.find(s=>s.id===c.sourceId);return `<div class="item"><div><b>${esc(c.name)}</b><div class="pill">${esc(s?s.name:'Unassigned')}</div></div><div class="actions"><button class="secondary" onclick="moveChannel('${c.id}',-1)">↑</button><button class="secondary" onclick="moveChannel('${c.id}',1)">↓</button><button class="secondary" onclick="editChannel('${c.id}')">Edit</button><button class="danger" onclick="removeChannel('${c.id}')">×</button></div></div>`}).join('')}
+function download(name,content,type){let blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),2000)}
+function xml(s){return String(s??'').replace(/[<>&"']/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&apos;'}[c]))}
+function eligible(){return data.channels.map(c=>({c,s:data.sources.find(s=>s.id===c.sourceId)})).filter(x=>playable(x.s))}
+function setFeedIP(ip){localStorage.setItem('lf-lan-ip',ip);el('feedm3u').value='http://'+ip+':8765/channels.m3u';el('feedxml').value='http://'+ip+':8765/guide.xml'}
+async function copyFeed(id){try{await navigator.clipboard.writeText(val(id));notice('Copied '+id+' to clipboard.')}catch{el(id).select();notice('Select and copy the highlighted URL manually.')}}
+function paintStatus(id,v){const node=el('status-'+id);if(!node)return;const state=v.state||'unknown';node.className='source-state '+state;node.textContent=({online:'Available',offline:'Offline',archived:'Archived',unknown:'Unverified',checking:'Checking…'}[state]||'Unverified');node.title=v.message||''}
+async function checkSource(id,quiet=false){if(!el('status-'+id))return;paintStatus(id,{state:'checking'});try{const r=await fetch('/api/status?id='+encodeURIComponent(id),{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const v=await r.json();statusCache.set(id,v);paintStatus(id,v);if(!quiet)notice(v.message||'Status checked.')}catch(e){const v={state:'unknown',message:'Could not verify source at this time.'};statusCache.set(id,v);paintStatus(id,v);if(!quiet)notice(v.message)}}
+async function refreshAllStatuses(){const run=++checkRun;const ids=data.sources.map(s=>s.id);let index=0;async function worker(){while(index<ids.length&&run===checkRun){const id=ids[index++];await checkSource(id,true)}}await Promise.all([worker(),worker()])}
+async function checkFeeds(manual=false){const feedback=el('serverTestResult');if(manual&&feedback){feedback.textContent='Checking local M3U server…';feedback.dataset.state='checking'}try{let r=await fetch('/channels.m3u',{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);let t=await r.text();let count=(t.match(/^#EXTINF:/gm)||[]).length;el('connection').textContent='● Server online · '+count+' exportable channel(s)';el('connection').style.color='#69e6c9';if(manual&&feedback){feedback.textContent='✓ Server reachable · '+count+' M3U channel(s) found. Playback not tested.';feedback.dataset.state='ok'}}catch(e){el('connection').textContent='● Server unavailable';el('connection').style.color='#ffc47c';if(manual&&feedback){feedback.textContent='✕ Server test failed: '+e.message;feedback.dataset.state='error'}}}
+function goStep(n){document.getElementById('step'+n).scrollIntoView({behavior:'smooth',block:'start'})}
+function exportM3U(){let list=eligible(),skipped=data.channels.length-list.length;let lines=['#EXTM3U'];for(let {c,s} of list){lines.push(`#EXTINF:-1 tvg-id="lf.${c.number}" tvg-name="${c.name.replace(/"/g,'')}" group-title="Link Forge",${c.name.replace(/[\r\n]/g,' ')}`);lines.push(['HLS stream','Direct media'].includes(kind(s.url))?s.url:location.origin+'/hls/'+encodeURIComponent(c.id)+'/index.m3u8')}download('link-forge-channels.m3u',lines.join('\n')+'\n','audio/x-mpegurl');notice(`Exported ${list.length} channel(s). Skipped ${skipped} unsupported/unassigned channel(s). For resolved sources, use the live hosted M3U URL for the correct LAN address; local file export may contain localhost links.`)}
+function exportXML(){let list=eligible();let lines=['<?xml version="1.0" encoding="UTF-8"?>','<!DOCTYPE tv SYSTEM "xmltv.dtd">','<tv generator-info-name="Link Forge Lite">'];for(let {c} of list){lines.push(`<channel id="lf.${xml(c.number)}"><display-name>${xml(c.number)} ${xml(c.name)}</display-name></channel>`)}lines.push('</tv>');download('link-forge-guide.xml',lines.join('\n'),'application/xml');notice(`Exported ${list.length} channel definitions. No programme entries were invented; some clients require schedule entries.`)}
+function exportJSON(){download('link-forge-project.json',JSON.stringify({format:'link-forge-lite',version:1,...data},null,2),'application/json');notice('Project backup downloaded.')}
+async function importJSON(event){let f=event.target.files[0];if(!f)return;try{let obj=JSON.parse(await f.text());if(obj.format!=='link-forge-lite'||!Array.isArray(obj.sources)||!Array.isArray(obj.channels))throw Error('Not a Link Forge backup');if(!confirm('Replace current project with this backup?'))return;data={sources:obj.sources.filter(x=>typeof x.id==='string'&&typeof x.name==='string'&&typeof x.url==='string'),channels:(()=>{let used=new Set();return obj.channels.filter(x=>typeof x.id==='string'&&typeof x.name==='string').map(x=>{let num=String(x.number??'');if(!/^[1-9][0-9]*$/.test(num)||used.has(num)){let n=1;while(used.has(String(n)))n++;num=String(n)}used.add(num);return {...x,number:num,description:String(x.description||''),sourceId:String(x.sourceId||'')}})})()};persist();notice('Project restored.')}catch(e){notice('Could not restore this backup: '+e.message)}finally{event.target.value=''}}
+async function init(){try{let r=await fetch('/api/project');if(!r.ok)throw Error('HTTP '+r.status);let v=await r.json();if(Array.isArray(v.sources)&&Array.isArray(v.channels)){data=v;render()}}catch(e){notice('Cannot connect to local Link Forge server: '+e.message)}try{let r=await fetch('/api/network');let x=await r.json();if(x.ips){let saved=localStorage.getItem('lf-lan-ip');let ips=x.ips;el('ipselect').innerHTML=ips.map(ip=>`<option value="${esc(ip)}">${esc(ip)}</option>`).join('');el('ipselect').value=ips.includes(saved)?saved:ips[0];setFeedIP(el('ipselect').value)}else if(x.ip){el('ipselect').innerHTML=`<option value="${esc(x.ip)}">${esc(x.ip)}</option>`;setFeedIP(x.ip)}}catch{}}
+render();init().then(()=>{checkFeeds();refreshAllStatuses()});setInterval(()=>{if(!document.hidden)refreshAllStatuses()},5*60*1000);
+</script><script>
+(function(){
+ const output=(id,value)=>{const n=document.getElementById(id);if(n)n.textContent=String(value)};
+ function update(){
+  if(typeof data==='undefined'||typeof statusCache==='undefined')return;
+  const sources=Array.isArray(data.sources)?data.sources:[];
+  let available=0,offline=0,unknown=0;
+  for(const source of sources){const state=(statusCache.get(source.id)||{}).state||'unknown';if(['online','available','archived','live'].includes(state))available++;else if(['offline','unavailable','error'].includes(state))offline++;else unknown++}
+  output('meterAvailable',available);output('meterOffline',offline);output('meterUnknown',unknown);
+  const connection=document.getElementById('connection');const match=connection?.textContent?.match(/(\d+) exportable channel/);if(match)output('meterExport',match[1]);
+ }
+ // Existing status checks run independently; read only their cached results.
+ setInterval(update,3000);window.addEventListener('load',update);
+})();
+</script></body></html>

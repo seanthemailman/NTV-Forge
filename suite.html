@@ -1,0 +1,135 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NTV Forge 1.0</title><style>
+:root{color-scheme:dark;font-family:'Segoe UI',Tahoma,system-ui,sans-serif;--cyan:#62d9d1;--amber:#e8a64b;--ivory:#e8e5d8;--steel:#45565a}*{box-sizing:border-box}body{margin:0;background:#111719;color:var(--ivory)}header{background:linear-gradient(180deg,#303b3b,#1b282a);border-bottom:3px solid #6b7972;box-shadow:0 5px 20px #0007;padding:15px 24px;display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}.brand{display:flex;align-items:center;gap:15px}.mark{border:2px solid #76877e;background:#1b292b;padding:9px 12px;font-size:24px;box-shadow:inset 0 0 0 3px #111719}.eyebrow{font-size:10px;color:var(--amber);letter-spacing:.2em;font-weight:800}h1{margin:0;font-size:26px;letter-spacing:.14em;line-height:1.2}h1 span{color:var(--cyan)}.sub{font-size:11px;color:#a8b8b4;letter-spacing:.08em;margin-top:5px}.right{display:flex;align-items:center;gap:20px;flex-wrap:wrap}.signal{font:700 11px ui-monospace,Consolas,monospace;letter-spacing:.09em;color:#b6d49b;white-space:nowrap}.led{display:inline-block;width:8px;height:8px;background:#9bcb79;border-radius:50%;box-shadow:0 0 9px #9bcb7977;margin-right:8px}nav{display:flex;gap:8px}button{background:linear-gradient(#3a4d51,#293b40);border:1px solid #71817d;border-bottom:3px solid #182325;border-radius:4px;color:var(--ivory);font-weight:750;letter-spacing:.07em;padding:12px 17px;cursor:pointer;box-shadow:inset 0 1px #ffffff24}button[aria-selected=true]{background:linear-gradient(#74ded4,#4aa9a5);border-color:#a1e9df;border-bottom-color:#327a79;color:#132629}button:focus-visible{outline:2px solid var(--amber);outline-offset:3px}iframe{display:block;width:100%;height:calc(100vh - 104px);border:0;background:#111719}iframe[hidden]{display:none}@media(max-width:900px){iframe{height:calc(100vh - 165px)}header{justify-content:center}}@media(max-width:500px){h1{font-size:20px}button{padding:10px 11px}.signal{display:none}}
+
+/* 0.5.1 / PHOSPHOR CONSOLE — static CSS, no animation or decorative charts */
+:root{--phosphor:#a5e6a1;--readout:#e9b45b;--glass:#112526;--shell:#293234}
+body{background:#111719!important}
+section{border-top:2px solid #78827a!important;background:linear-gradient(145deg,#273335,#1b292c)!important;box-shadow:inset 0 1px #ffffff13,0 3px 10px #0005!important}
+button,button.secondary{background:linear-gradient(180deg,#ffffff21 0%,#b6ded41b 44%,#0a2229c9 100%)!important;color:#c8f4ee!important;border:1px solid #78a8a4!important;border-bottom:3px solid #183e42!important;box-shadow:inset 0 1px #ffffff55,inset 0 -2px 8px #0008,0 2px 3px #0006!important;text-shadow:0 0 7px #62d9d155!important}
+button:not(.secondary):not(.danger){background:linear-gradient(180deg,#c7ffed48 0%,#45988d44 42%,#0b2c30d9 100%)!important;border-color:#7ed6cb!important}
+button.danger{background:linear-gradient(180deg,#fca8a52a,#50272bd9)!important;color:#ffd8d1!important}
+button:hover{filter:brightness(1.18)}button:disabled{opacity:.45;cursor:not-allowed}
+input,select,textarea{background:#0b1b1c!important;border-color:#536d67!important;color:#e5eadc!important}
+.tip,.item,.csv-stats,.rules-panel{background:#142326!important}
+.pill,.source-state.online,.status{color:var(--phosphor)!important;text-shadow:0 0 6px #a5e6a13a}
+#notice,.source-state.checking,.warn{color:var(--readout)!important}
+.terminal-meter{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:9px;margin:14px 0 20px}
+.terminal-readout{min-width:0;background:#0b1b1a;border:1px solid #506760;border-top:2px solid #829185;border-radius:3px;padding:11px 13px;box-shadow:inset 0 3px 9px #0008}
+.terminal-readout .readout-label{display:block;color:#b5b5a4;font:700 10px Consolas,monospace;letter-spacing:.1em;margin-bottom:6px}
+.terminal-readout output{display:block;color:var(--phosphor);font:700 20px Consolas,monospace;text-shadow:0 0 9px #a5e6a144;overflow-wrap:anywhere}
+.terminal-readout.amber output{color:var(--readout);text-shadow:0 0 9px #e9b45b55}
+.terminal-readout.red output{color:#ff8780;text-shadow:0 0 9px #ff878044}
+.terminal-readout .readout-caption{font:11px Consolas,monospace;color:#a4b6af;margin-top:5px}
+@media(prefers-reduced-motion:reduce){button{transition:none!important}}
+
+header .signal{background:#091b1b;border:1px solid #58746b;padding:9px 13px;color:#a5e6a1}nav button[aria-selected=true]{background:linear-gradient(#b9f8ec55,#236b6866)!important;color:#cafff5!important;border-color:#8ae1d6!important}
+
+/* 0.5.2 / IVORY HARDWARE KEYS — no images, timers, or animation loops */
+:root{--key-ivory:#e4dfcb;--key-highlight:#fffdf0;--key-shadow:#999b8d;--key-ink:#263432}
+/* Large navigation and action buttons only; compact row controls remain dark */
+nav button, .actions > button:not(.danger), .flex > div > button:not(.danger), #exportBtn {
+ background:linear-gradient(180deg,#fffef1ed 0%,#e4dfcbf0 46%,#b7b9a9f2 100%)!important;
+ color:var(--key-ink)!important;
+ text-shadow:none!important;
+ border:1px solid #fbf7e0!important;
+ border-bottom:4px solid #7f887f!important;
+ border-right:3px solid #a1a79a!important;
+ border-radius:5px!important;
+ box-shadow:inset 0 2px 1px #fffdf0b0,inset 0 -3px 5px #6e76673d,0 3px 0 #101918,0 5px 7px #0006!important;
+ font-weight:800!important;letter-spacing:.055em!important;
+}
+nav button:hover, .actions > button:not(.danger):hover, .flex > div > button:not(.danger):hover{filter:brightness(1.09)!important}
+nav button:active, .actions > button:not(.danger):active, .flex > div > button:not(.danger):active{transform:translateY(2px)!important;border-bottom-width:2px!important}
+nav button[aria-selected=true],nav button.active{background:linear-gradient(180deg,#e3f4d5,#a9d2aa 60%,#789f84)!important;border-color:#e1f6d2!important;color:#173a2c!important}
+/* Destructive operations stay visually distinct */
+button.danger{border-left:3px solid #c87369!important}
+/* No motion for users requesting reduced motion */
+@media(prefers-reduced-motion:reduce){button{transition:none!important}}
+
+
+/* v0.5.2a: readable ivory navigation keycaps in both states. */
+nav button, nav button:not(.secondary):not(.danger), nav button[aria-selected="true"], nav button[aria-selected="false"] {
+  background:linear-gradient(180deg,#fffdf0 0%,#e5dfca 50%,#b6b6a4 100%)!important;
+  color:#1a2925!important; -webkit-text-fill-color:#1a2925!important;
+  text-shadow:none!important; opacity:1!important;
+  font-family:Consolas,'Segoe UI',sans-serif!important; font-size:13px!important;
+  font-weight:900!important; letter-spacing:.025em!important;
+  line-height:1.35!important; white-space:normal!important; overflow-wrap:normal!important;
+  min-height:50px; min-width:190px; padding:12px 18px!important;
+}
+nav button[aria-selected="true"] {
+  background:linear-gradient(180deg,#f5f1d8,#c9d7b2 65%,#9cae8e)!important;
+  box-shadow:inset 0 2px #fffdf0,0 3px #111b18,0 0 0 2px #9bcb79!important;
+}
+@media(max-width:600px){nav{flex-wrap:wrap}nav button{min-width:0!important;flex:1 1 150px}}
+
+/* v0.5.2c — all controls use static, lightweight illuminated keycaps.
+   The warm ivory primary keys are preserved; compact controls get a restrained
+   translucent phosphor glow. No animations, images, or additional polling. */
+button,button.secondary,button.danger {
+  position:relative;
+  background-image:linear-gradient(180deg,rgba(220,255,245,.23) 0%,rgba(93,174,164,.22) 38%,rgba(13,45,48,.95) 100%)!important;
+  color:#e7fff8!important;
+  -webkit-text-fill-color:#e7fff8!important;
+  text-shadow:none!important;
+  border:1px solid #75b6ac!important;
+  border-bottom:3px solid #234a46!important;
+  border-radius:5px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.6),inset 0 0 12px rgba(90,219,194,.18),0 0 7px rgba(98,217,209,.21),0 3px 3px rgba(0,0,0,.5)!important;
+  transition:filter .12s ease,transform .12s ease!important;
+}
+button:hover:not(:disabled){filter:brightness(1.15)!important;box-shadow:inset 0 1px 0 #ffffffb0,inset 0 0 14px #62d9d155,0 0 11px #62d9d166,0 3px 3px #0009!important}
+button:active:not(:disabled){transform:translateY(2px);border-bottom-width:1px!important}
+button:focus-visible{outline:2px solid #f3c37d!important;outline-offset:3px!important}
+button:disabled{opacity:.5!important;cursor:not-allowed!important;filter:none!important}
+button.danger{
+  background-image:linear-gradient(180deg,#e59b963d,#783c4359 45%,#391c23e8)!important;
+  color:#ffe4dc!important;-webkit-text-fill-color:#ffe4dc!important;
+  border-color:#bb726e!important;border-bottom-color:#612b32!important;
+  box-shadow:inset 0 1px #ffd7d57a,inset 0 0 11px #ff686033,0 0 6px #ff686033,0 3px 3px #0008!important;
+}
+button.danger:hover:not(:disabled){box-shadow:inset 0 1px #ffe1de,inset 0 0 13px #ff686066,0 0 11px #ff686066,0 3px 3px #0008!important}
+/* Prominent ivory keys retain dark, high-contrast lettering and warm backlight. */
+
+nav button,nav button[aria-selected="true"],nav button[aria-selected="false"] {
+ background-image:linear-gradient(180deg,#fffdf2,#e7dfc7 48%,#b8b9a5)!important;
+ color:#1b2a26!important;-webkit-text-fill-color:#1b2a26!important;
+ border-color:#fff8dc!important;border-bottom:4px solid #7f887f!important;
+ box-shadow:inset 0 2px #fffef8,inset 0 0 12px #fff3b67a,0 0 8px #e8a64b33,0 3px 3px #0009!important;
+ text-shadow:none!important;
+}
+nav button[aria-selected="true"]{background-image:linear-gradient(180deg,#f5f1d8,#c9d7b2 65%,#9cae8e)!important;box-shadow:inset 0 2px #fffdf0,inset 0 0 14px #9bcb7977,0 0 9px #9bcb7977,0 3px #111b18!important}
+
+
+/* 1.0: amber workspace selector keys; deliberately separate from ivory actions. */
+nav button, nav button[aria-selected="true"], nav button[aria-selected="false"] {
+  background:linear-gradient(180deg,#fff0bf 0%,#e5b768 48%,#a66a2f 100%)!important;
+  background-image:linear-gradient(180deg,#fff0bf 0%,#e5b768 48%,#a66a2f 100%)!important;
+  color:#292014!important;-webkit-text-fill-color:#292014!important;
+  border:1px solid #ffe3a0!important;border-bottom:4px solid #75451f!important;
+  text-shadow:none!important;
+  box-shadow:inset 0 2px 0 #fff9d8,inset 0 0 12px #ffdf8c88,0 0 10px #ed9d3a55,0 3px 4px #0009!important;
+}
+nav button[aria-selected="true"] {
+  background:linear-gradient(180deg,#fff8da 0%,#ffd188 45%,#d18b39 100%)!important;
+  background-image:linear-gradient(180deg,#fff8da 0%,#ffd188 45%,#d18b39 100%)!important;
+  border-color:#fff0bb!important;
+  box-shadow:inset 0 2px 0 #fffef0,inset 0 0 16px #ffe0a9,0 0 17px #f4aa4cbb,0 3px 4px #0009!important;
+}
+nav button:hover:not(:disabled){filter:brightness(1.08)!important}
+
+/* 1.0: unified terminal-key lettering. Visual-only adjustment. */
+button, input[type="button"], input[type="submit"], .csv-picker-button {
+  font-family:Consolas,"Lucida Console","Courier New",monospace!important;
+  font-weight:600!important;
+  letter-spacing:.085em!important;
+  line-height:1.35!important;
+  text-shadow:none!important;
+}
+nav button, .actions > button, .flex > div > button, #exportBtn, .csv-picker-button {
+  font-size:14px!important;
+}
+/* Keep long labels readable and prevent letter spacing from clipping them. */
+button, .csv-picker-button {white-space:normal; overflow-wrap:break-word;}
+
+</style></head><body><header><div class="brand"><div class="mark" aria-hidden="true">▣</div><div><div class="eyebrow">NOSTALGIATV / COMPANION SYSTEM</div><h1>NTV <span>FORGE</span></h1><div class="sub">RETRO TERMINAL · VERSION 0.5.3</div></div></div><div class="right"><div class="signal"><span class="led"></span>LOCAL UI / READY</div><nav aria-label="Forge workspaces"><button id="linkTab" aria-selected="true" onclick="switchTab('link')">01 / LINK FORGE</button><button id="channelTab" aria-selected="false" onclick="switchTab('channel')">02 / CHANNEL FORGE</button></nav></div></header><iframe id="linkFrame" title="Link Forge" src="/link"></iframe><iframe id="channelFrame" title="Channel Forge" src="/forge" hidden></iframe><script>function switchTab(which){const link=which==='link';document.getElementById('linkFrame').hidden=!link;document.getElementById('channelFrame').hidden=link;document.getElementById('linkTab').setAttribute('aria-selected',String(link));document.getElementById('channelTab').setAttribute('aria-selected',String(!link));history.replaceState(null,'',link?'#link':'#channel')}switchTab(location.hash==='#channel'?'channel':'link');</script></body></html>

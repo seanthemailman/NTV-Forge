@@ -1,0 +1,424 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NTV Channel Forge v0.1.15</title><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20128%20128%22%3E%3Crect%20width%3D%22128%22%20height%3D%22128%22%20rx%3D%2222%22%20fill%3D%22%23101c30%22%2F%3E%3Cg%20stroke-linejoin%3D%22round%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M28%2077H100L90%2089H77L72%20108H49L53%2089H38Z%22%20fill%3D%22%23526b86%22%20stroke%3D%22%23a8d9ee%22%20stroke-width%3D%225%22%2F%3E%3Cpath%20d%3D%22M17%2064H111L100%2077H28Z%22%20fill%3D%22%2391b8d1%22%20stroke%3D%22%23d7efff%22%20stroke-width%3D%224%22%2F%3E%3Cg%20transform%3D%22rotate%28-17%2061%2042%29%22%3E%3Crect%20x%3D%2239%22%20y%3D%2217%22%20width%3D%2244%22%20height%3D%2244%22%20rx%3D%223%22%20fill%3D%22%23e8a74f%22%20stroke%3D%22%23ffd28a%22%20stroke-width%3D%224%22%2F%3E%3Crect%20x%3D%2248%22%20y%3D%2226%22%20width%3D%2226%22%20height%3D%2226%22%20rx%3D%222%22%20fill%3D%22%2315283a%22%20stroke%3D%22%23ffe2a5%22%20stroke-width%3D%222%22%2F%3E%3Cpath%20d%3D%22M43%2019v40M79%2019v40%22%20stroke%3D%22%2317283a%22%20stroke-width%3D%223%22%20stroke-dasharray%3D%225%205%22%2F%3E%3C%2Fg%3E%3Cpath%20d%3D%22M90%2021L101%2012M100%2038L116%2036M26%2028L16%2020%22%20stroke%3D%22%23ffbe5b%22%20stroke-width%3D%224%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E"><style>
+:root{font:15px system-ui;color:#e6edf7;background:#0a1020}*{box-sizing:border-box}body{margin:0}header{padding:24px 4%;background:#121c32;border-bottom:1px solid #31405a}h1{margin:0;font-size:30px}header p{color:#a5b8d0}main{max-width:1280px;margin:auto;padding:22px}section{background:#141f34;border:1px solid #30405a;border-radius:14px;padding:18px;margin-bottom:16px}h2{margin:0 0 15px;font-size:19px}label{display:block;color:#b8c8dd;margin:8px 0 4px}input,select,button{font:inherit;border-radius:7px;padding:10px;border:1px solid #425776}input,select{background:#0b1427;color:#f3f7ff;max-width:100%;width:100%}button{background:#3178d7;color:white;border:0;cursor:pointer;font-weight:650}button.secondary{background:#2d3d59}button.danger{background:#863a48}button:hover{filter:brightness(1.15)}.flex{display:flex;gap:12px;align-items:end;flex-wrap:wrap}.flex>*{flex:1;min-width:160px}.row{display:grid;grid-template-columns: 1fr 2fr;gap:16px}.small{font-size:13px;color:#a9b9ce}.scroll{max-height:390px;overflow:auto}table{border-collapse:collapse;width:100%;font-size:13px}td,th{padding:8px;border-bottom:1px solid #30405a;text-align:left}tr:hover{background:#202d46}.selected{background:#264567!important}.pill{display:inline-block;border:1px solid #56739c;border-radius:15px;padding:3px 9px;color:#d3e5fa}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.actions button{flex:1}.status{min-height:24px;color:#a8e8c2}.warn{color:#f7cb85} @media(max-width:780px){.row{grid-template-columns:1fr}}
+
+/* v0.1.6: single selector and balanced editing panes */
+main{max-width:1680px;width:100%;padding:20px clamp(12px,2vw,30px)}
+.editor-selector{display:grid;grid-template-columns:minmax(260px,1fr) auto;gap:20px;align-items:end}
+.editor-selector select{width:100%;max-width:720px}
+.editor-workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:stretch;margin-bottom:16px}
+.editor-workspace>section{min-width:0;margin:0;display:flex;flex-direction:column;min-height:540px;height:auto}
+.editor-workspace .scroll{height:330px;max-height:330px;min-height:0;flex:none;overflow:auto;overscroll-behavior:contain}
+.editor-workspace table{min-width:100%;width:max-content}
+.editor-workspace th{position:sticky;top:0;background:#1c2b44;z-index:1;white-space:nowrap}
+.editor-workspace td{vertical-align:middle}
+.editor-workspace .library-panel .flex{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:end;gap:8px}
+.editor-workspace .library-panel .flex>*{min-width:0}
+.editor-workspace .toggle{display:flex;align-items:center;gap:8px;margin:10px 0}
+.editor-workspace .toggle input{width:auto;flex:none}
+.editor-workspace .actions button{min-width:0}
+@media(max-width:1100px){.editor-workspace .library-panel .flex{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:800px){.editor-workspace{grid-template-columns:minmax(0,1fr)}.editor-workspace>section{height:520px}.editor-selector{grid-template-columns:1fr}}
+
+.channel-picker{display:grid;grid-template-columns:minmax(220px,1fr) minmax(220px,2fr);gap:14px;align-items:end}
+.channel-picker label{margin-top:0}.channel-picker select{max-width:none}
+#channelSearch{width:100%}.unsaved{color:#f7cb85;font-weight:700}
+.brand{display:flex;align-items:center;gap:14px}.brand img{height:58px;width:58px;flex:none;filter:drop-shadow(0 2px 8px #0006)}
+button:disabled{opacity:.5;cursor:not-allowed}
+button.busy{opacity:.65;cursor:progress}
+.feedback{display:inline-block;margin-left:8px;font-size:13px;color:#a8e8c2}
+@media(max-width:760px){.channel-picker{grid-template-columns:1fr}}
+
+/* v0.1.12: universal interaction feedback */
+button{position:relative;transition:transform .12s ease,filter .12s ease,box-shadow .12s ease,background-color .12s ease}
+button:active,button.forge-pressed{transform:translateY(2px) scale(.985);filter:brightness(1.35);box-shadow:inset 0 2px 8px #0007}
+button:focus-visible{outline:3px solid #8ad6ff;outline-offset:3px}
+button.forge-working{cursor:progress;opacity:.8;padding-right:34px}
+button.forge-working::after{content:"";position:absolute;right:11px;top:calc(50% - 7px);width:14px;height:14px;border:2px solid #fff7;border-top-color:white;border-radius:50%;animation:forge-spin .75s linear infinite}
+@keyframes forge-spin{to{transform:rotate(360deg)}}
+#forgeToast{position:fixed;bottom:20px;right:20px;z-index:10000;max-width:min(460px,calc(100vw - 32px));padding:12px 16px;border:1px solid #57789d;border-radius:10px;background:#203651;color:#f3f7ff;box-shadow:0 8px 30px #0009;opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .18s,transform .18s}
+#forgeToast.show{opacity:1;transform:translateY(0)}
+#forgeToast.error{border-color:#f58d9b}#forgeToast.success{border-color:#80dbac}
+@media(prefers-reduced-motion:reduce){button,#forgeToast{transition:none}button.forge-working::after{animation:none}}
+
+/* v0.1.12: distinct genre-rule editor */
+.contents-panel>.scroll{height:290px;max-height:290px;min-height:150px;flex:none}
+.rules-panel{border-top:1px solid #425776;margin-top:14px;padding-top:14px;display:flex;flex-direction:column;gap:7px;min-height:225px;max-height:none}
+.rules-heading{display:flex;justify-content:space-between;align-items:start;gap:8px}.rules-heading h3{font-size:16px;margin:0}.rules-heading p{margin:5px 0}.rules-scroll{min-height:60px;max-height:160px;overflow:auto;flex:none}.rules-scroll table{width:100%;min-width:0}.rules-scroll td:first-child{overflow-wrap:anywhere}.rules-scroll button{padding:6px 10px}
+.rule-actions{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:end}.rule-actions label{grid-column:1/-1;margin:0}.rule-actions select{min-width:0}.rule-actions button{white-space:nowrap}
+/* v0.1.12: grow library results into free space; keep footer actions at bottom */
+.editor-workspace>section{min-height:680px}
+.editor-workspace .library-panel .scroll{flex:1 1 460px;height:auto;max-height:none;min-height:360px;overflow:auto}
+.editor-workspace .library-panel .actions{margin-top:auto;padding-top:14px}
+.rules-panel{min-height:0;overflow:visible}
+.rule-preview{border-top:1px solid #425776;margin-top:12px;padding-top:12px;min-width:0}
+.rule-preview h3{margin:0 0 10px;font-size:16px}
+.rule-preview .preview-scroll{max-height:210px;overflow:auto;min-height:60px}
+.rule-preview table{min-width:490px;width:100%}
+.rule-preview td{white-space:normal;overflow-wrap:anywhere}
+@media(max-width:800px){.editor-workspace>section{min-height:0;height:auto}.editor-workspace .library-panel .scroll{height:480px;flex:none}}
+
+
+/* v0.1.13 Genre Explorer */
+.genre-explorer{display:flex;flex-direction:column;gap:9px;min-width:0}
+.genre-item{border:1px solid #425776;border-radius:10px;overflow:hidden;min-width:0}
+.genre-toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;white-space:normal;min-height:44px}
+.genre-toggle span:first-child{overflow-wrap:anywhere}
+.genre-details{padding:10px;min-width:0;background:rgba(0,0,0,.12)}
+.genre-results{max-height:320px;overflow:auto;min-width:0}
+.genre-results table{width:100%;min-width:560px}
+.genre-results th,.genre-results td{white-space:normal;overflow-wrap:anywhere}
+
+/* v0.1.15: keep the two editor sections inside one grid, with no stray wrapper. */
+.editor-workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:stretch;gap:16px}
+.editor-workspace>section{min-width:0;width:100%;height:auto;align-self:stretch}
+.editor-workspace .contents-panel{overflow:hidden}
+.editor-workspace .library-panel{min-height:680px}
+.editor-workspace .library-panel .scroll{flex:1 1 460px;min-height:360px;max-height:620px;overflow:auto}
+.editor-workspace .library-panel .actions{margin-top:auto}
+.hide-existing-toggle{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start;gap:10px;width:100%;margin:14px 0 8px;cursor:pointer}
+.hide-existing-toggle input[type=checkbox]{display:block;flex:0 0 18px;width:18px!important;height:18px!important;min-width:18px;margin:0;padding:0;accent-color:#53b8f3}
+.hide-existing-toggle span{display:inline;flex:0 1 auto}
+.version-tag{display:inline-block;vertical-align:middle;font-size:13px;font-weight:700;letter-spacing:.03em;color:#d5ecff;background:#284463;border:1px solid #577ca4;padding:5px 9px;border-radius:20px;white-space:nowrap}
+@media(max-width:800px){.editor-workspace{grid-template-columns:minmax(0,1fr)}.editor-workspace .library-panel{min-height:560px}.editor-workspace .library-panel .scroll{height:460px;flex:none}}
+.csv-stats{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}.csv-stats .pill{padding:7px 10px}.section-subtitle{font-size:16px;margin:14px 0 6px}.contents-panel>.scroll{min-height:160px;max-height:410px;overflow:auto}.contents-panel .rules-panel{margin-top:16px}.contents-panel .rules-panel .genre-results{max-height:360px;overflow:auto}
+
+/* NTV FORGE v0.5 — RETRO TERMINAL / cassette-futurist visual system */
+:root{color-scheme:dark;--void:#111719;--panel:#243238;--panel-hi:#2b3b40;--screen:#151e20;--steel:#45565a;--cyan:#62d9d1;--amber:#e8a64b;--green:#9bcb79;--ivory:#e8e5d8;--muted:#a7b7b4;--red:#ff7876;--beige:#c3bba6;background:var(--void)!important;color:var(--ivory)!important;font-family:'Segoe UI',Tahoma,system-ui,sans-serif}
+body{background:radial-gradient(ellipse at 50% -40%,#26383b 0%,#111719 62%) fixed!important;color:var(--ivory)!important}
+header{background:linear-gradient(180deg,#2b3839,#1a2528)!important;border-bottom:2px solid #6d7770!important;box-shadow:inset 0 -5px 0 #12191b,0 4px 18px #0005}
+h1,h2,h3{color:var(--ivory)!important}h1{letter-spacing:.105em!important;font-weight:800}h1 span{color:var(--cyan)!important}
+small,.small,.muted,.help,.subtitle,header p{color:var(--muted)!important}
+section{background:linear-gradient(155deg,#29383b,#202d30)!important;border:1px solid var(--steel)!important;border-top:3px solid #6e7974!important;border-radius:6px!important;box-shadow:inset 0 1px 0 #ffffff10,0 7px 22px #0004}
+label{color:var(--beige)!important;font-size:.88em;letter-spacing:.045em}
+input,select,textarea{background:var(--screen)!important;color:var(--ivory)!important;border:1px solid #61736f!important;border-radius:4px!important;box-shadow:inset 0 2px 6px #0005}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--cyan);outline-offset:1px}
+button{background:linear-gradient(180deg,#7be2d7,#4aaea9)!important;color:#10272a!important;border:1px solid #a1e9df!important;border-bottom:3px solid #327a79!important;border-radius:4px!important;box-shadow:inset 0 1px 0 #ffffff66,0 3px 0 #10191b!important;letter-spacing:.035em;transition:filter .15s,transform .15s}
+button:hover{filter:brightness(1.12)}button:active{transform:translateY(2px);box-shadow:inset 0 2px 5px #0006!important}
+button.secondary{background:linear-gradient(180deg,#40545a,#304046)!important;color:var(--ivory)!important;border:1px solid #71837e!important;border-bottom:3px solid #1b272a!important}
+button.danger{background:linear-gradient(180deg,#a65b57,#773b3b)!important;color:#fff!important;border:1px solid #c9867e!important;border-bottom:3px solid #542a2a!important}
+button:focus-visible{outline:2px solid var(--amber)!important;outline-offset:3px}
+.item,.tip,.genre-details{background:#1b292b!important;border:1px solid #40565a!important;border-radius:4px!important}
+.tip{border-left:4px solid var(--amber)!important;color:var(--ivory)!important}
+.num{background:#172c2e!important;color:var(--cyan)!important;border:1px solid #427d79!important;border-radius:4px!important}
+.pill{border-color:#69847b!important;color:var(--cyan)!important}.source-state.online,.status{color:var(--green)!important}.source-state.offline{color:var(--red)!important}.source-state.checking,.warn,#notice,.unsaved{color:var(--amber)!important}.source-state.archived{color:#9ac4df!important}
+table th{background:#24363a!important;color:var(--amber)!important;text-transform:uppercase;letter-spacing:.04em}td,th{border-bottom:1px solid #45575a!important}tr:hover{background:#33484a!important}.selected{background:#345a57!important}
+#forgeToast{background:#24383a!important;color:var(--ivory)!important;border-color:var(--cyan)!important}
+@media(prefers-reduced-motion:reduce){button{transition:none}}
+
+
+/* 0.5.1 / PHOSPHOR CONSOLE — static CSS, no animation or decorative charts */
+:root{--phosphor:#a5e6a1;--readout:#e9b45b;--glass:#112526;--shell:#293234}
+body{background:#111719!important}
+section{border-top:2px solid #78827a!important;background:linear-gradient(145deg,#273335,#1b292c)!important;box-shadow:inset 0 1px #ffffff13,0 3px 10px #0005!important}
+button,button.secondary{background:linear-gradient(180deg,#ffffff21 0%,#b6ded41b 44%,#0a2229c9 100%)!important;color:#c8f4ee!important;border:1px solid #78a8a4!important;border-bottom:3px solid #183e42!important;box-shadow:inset 0 1px #ffffff55,inset 0 -2px 8px #0008,0 2px 3px #0006!important;text-shadow:0 0 7px #62d9d155!important}
+button:not(.secondary):not(.danger){background:linear-gradient(180deg,#c7ffed48 0%,#45988d44 42%,#0b2c30d9 100%)!important;border-color:#7ed6cb!important}
+button.danger{background:linear-gradient(180deg,#fca8a52a,#50272bd9)!important;color:#ffd8d1!important}
+button:hover{filter:brightness(1.18)}button:disabled{opacity:.45;cursor:not-allowed}
+input,select,textarea{background:#0b1b1c!important;border-color:#536d67!important;color:#e5eadc!important}
+.tip,.item,.csv-stats,.rules-panel{background:#142326!important}
+.pill,.source-state.online,.status{color:var(--phosphor)!important;text-shadow:0 0 6px #a5e6a13a}
+#notice,.source-state.checking,.warn{color:var(--readout)!important}
+.terminal-meter{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:9px;margin:14px 0 20px}
+.terminal-readout{min-width:0;background:#0b1b1a;border:1px solid #506760;border-top:2px solid #829185;border-radius:3px;padding:11px 13px;box-shadow:inset 0 3px 9px #0008}
+.terminal-readout .readout-label{display:block;color:#b5b5a4;font:700 10px Consolas,monospace;letter-spacing:.1em;margin-bottom:6px}
+.terminal-readout output{display:block;color:var(--phosphor);font:700 20px Consolas,monospace;text-shadow:0 0 9px #a5e6a144;overflow-wrap:anywhere}
+.terminal-readout.amber output{color:var(--readout);text-shadow:0 0 9px #e9b45b55}
+.terminal-readout.red output{color:#ff8780;text-shadow:0 0 9px #ff878044}
+.terminal-readout .readout-caption{font:11px Consolas,monospace;color:#a4b6af;margin-top:5px}
+@media(prefers-reduced-motion:reduce){button{transition:none!important}}
+
+/* 0.5.2 / IVORY HARDWARE KEYS — no images, timers, or animation loops */
+:root{--key-ivory:#e4dfcb;--key-highlight:#fffdf0;--key-shadow:#999b8d;--key-ink:#263432}
+/* Large navigation and action buttons only; compact row controls remain dark */
+main > section > .actions > button:not(.danger), main > section > .flex > div > button:not(.danger), #exportBtn {
+ background:linear-gradient(180deg,#fffef1ed 0%,#e4dfcbf0 46%,#b7b9a9f2 100%)!important;
+ color:var(--key-ink)!important;
+ text-shadow:none!important;
+ border:1px solid #fbf7e0!important;
+ border-bottom:4px solid #7f887f!important;
+ border-right:3px solid #a1a79a!important;
+ border-radius:5px!important;
+ box-shadow:inset 0 2px 1px #fffdf0b0,inset 0 -3px 5px #6e76673d,0 3px 0 #101918,0 5px 7px #0006!important;
+ font-weight:800!important;letter-spacing:.055em!important;
+}
+main > section > .actions > button:not(.danger):hover, main > section > .flex > div > button:not(.danger):hover{filter:brightness(1.09)!important}
+main > section > .actions > button:not(.danger):active, main > section > .flex > div > button:not(.danger):active{transform:translateY(2px)!important;border-bottom-width:2px!important}
+nav button[aria-selected=true],nav button.active{background:linear-gradient(180deg,#e3f4d5,#a9d2aa 60%,#789f84)!important;border-color:#e1f6d2!important;color:#173a2c!important}
+/* Destructive operations stay visually distinct */
+button.danger{border-left:3px solid #c87369!important}
+/* No motion for users requesting reduced motion */
+@media(prefers-reduced-motion:reduce){button{transition:none!important}}
+
+
+/* v0.5.2c — all controls use static, lightweight illuminated keycaps.
+   The warm ivory primary keys are preserved; compact controls get a restrained
+   translucent phosphor glow. No animations, images, or additional polling. */
+button,button.secondary,button.danger {
+  position:relative;
+  background-image:linear-gradient(180deg,rgba(220,255,245,.23) 0%,rgba(93,174,164,.22) 38%,rgba(13,45,48,.95) 100%)!important;
+  color:#e7fff8!important;
+  -webkit-text-fill-color:#e7fff8!important;
+  text-shadow:none!important;
+  border:1px solid #75b6ac!important;
+  border-bottom:3px solid #234a46!important;
+  border-radius:5px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.6),inset 0 0 12px rgba(90,219,194,.18),0 0 7px rgba(98,217,209,.21),0 3px 3px rgba(0,0,0,.5)!important;
+  transition:filter .12s ease,transform .12s ease!important;
+}
+button:hover:not(:disabled){filter:brightness(1.15)!important;box-shadow:inset 0 1px 0 #ffffffb0,inset 0 0 14px #62d9d155,0 0 11px #62d9d166,0 3px 3px #0009!important}
+button:active:not(:disabled){transform:translateY(2px);border-bottom-width:1px!important}
+button:focus-visible{outline:2px solid #f3c37d!important;outline-offset:3px!important}
+button:disabled{opacity:.5!important;cursor:not-allowed!important;filter:none!important}
+button.danger{
+  background-image:linear-gradient(180deg,#e59b963d,#783c4359 45%,#391c23e8)!important;
+  color:#ffe4dc!important;-webkit-text-fill-color:#ffe4dc!important;
+  border-color:#bb726e!important;border-bottom-color:#612b32!important;
+  box-shadow:inset 0 1px #ffd7d57a,inset 0 0 11px #ff686033,0 0 6px #ff686033,0 3px 3px #0008!important;
+}
+button.danger:hover:not(:disabled){box-shadow:inset 0 1px #ffe1de,inset 0 0 13px #ff686066,0 0 11px #ff686066,0 3px 3px #0008!important}
+/* Prominent ivory keys retain dark, high-contrast lettering and warm backlight. */
+
+nav button, .actions > button:not(.danger), .flex > div > button:not(.danger), #exportBtn {
+ background-image:linear-gradient(180deg,#fffdf2,#e7dfc7 48%,#b8b9a5)!important;
+ color:#1b2a26!important;-webkit-text-fill-color:#1b2a26!important;
+ border-color:#fff8dc!important;border-bottom:4px solid #7f887f!important;
+ box-shadow:inset 0 2px #fffef8,inset 0 0 12px #fff3b67a,0 0 8px #e8a64b33,0 3px 3px #0009!important;
+ text-shadow:none!important;
+}
+nav button:hover:not(:disabled), .actions > button:not(.danger):hover:not(:disabled), .flex > div > button:not(.danger):hover:not(:disabled), #exportBtn:hover:not(:disabled){
+ box-shadow:inset 0 2px #fff,inset 0 0 15px #fff3b6b0,0 0 12px #e8a64b66,0 3px 3px #0009!important;
+}
+
+
+/* v0.5.2c: CRT bezel and responsive assigned-title table. */
+main>section,.editor-workspace>section{
+ border:5px solid #10191b!important;
+ outline:1px solid #63716b;
+ border-radius:15px!important;
+ box-shadow:inset 0 0 0 2px #53615c,inset 0 0 24px rgba(0,0,0,.35),0 3px 0 #050a0b,0 8px 16px rgba(0,0,0,.35)!important;
+ background:linear-gradient(145deg,#273739,#172326)!important;
+}
+.contents-panel>.scroll{width:100%;min-width:0;overflow-x:hidden!important}
+.editor-workspace .contents-panel>.scroll table{width:100%!important;min-width:0!important;table-layout:fixed!important}
+.contents-panel>.scroll th,.contents-panel>.scroll td{white-space:normal!important;overflow-wrap:anywhere;word-break:normal;padding:8px 5px!important}
+.contents-panel>.scroll th:nth-child(1){width:32%}
+.contents-panel>.scroll th:nth-child(2){width:17%}
+.contents-panel>.scroll th:nth-child(3){width:30%}
+.contents-panel>.scroll th:nth-child(4){width:21%}
+.contents-panel>.scroll td:last-child button{width:100%;min-width:0;padding:7px 3px!important;font-size:12px;white-space:normal}
+.contents-panel>.scroll .warn,.contents-panel>.scroll .pill{font-size:12px;line-height:1.2;white-space:normal}
+@media(max-width:650px){main>section,.editor-workspace>section{border-width:3px!important;border-radius:9px!important}.contents-panel>.scroll th,.contents-panel>.scroll td{font-size:11px!important}}
+
+/* v0.5.2e: custom CSV file picker matching the illuminated ivory action keys. */
+.csv-picker{display:flex;align-items:center;gap:12px;flex-wrap:wrap;min-width:0;margin-top:7px}
+.csv-picker-native{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;overflow:hidden!important;pointer-events:none!important;clip-path:inset(50%)!important}
+.csv-picker-button{display:inline-flex!important;align-items:center;justify-content:center;min-height:43px;padding:10px 19px!important;cursor:pointer;
+  background:linear-gradient(180deg,#fffdf0,#e9ddc0 50%,#b6b49e)!important;color:#25302a!important;
+  border:1px solid #fff5d8!important;border-bottom:3px solid #797b6d!important;border-radius:5px!important;
+  font:800 13px ui-monospace,Consolas,monospace!important;letter-spacing:.05em!important;text-shadow:none!important;
+  box-shadow:inset 0 2px #fffef7,inset 0 0 12px #fff2ad77,0 0 8px #e8a64b33,0 3px 4px #0008!important;
+}
+.csv-picker-button:hover{filter:brightness(1.08)}
+.csv-picker-button:focus-visible{outline:2px solid #f3c37d!important;outline-offset:3px!important}
+.csv-picker-name{color:#e8e5d8;overflow-wrap:anywhere;min-width:0;font-size:.92em}
+
+/* v0.5.2e: unified terminal-key lettering. Visual-only adjustment. */
+button, input[type="button"], input[type="submit"], .csv-picker-button {
+  font-family:Consolas,"Lucida Console","Courier New",monospace!important;
+  font-weight:600!important;
+  letter-spacing:.085em!important;
+  line-height:1.35!important;
+  text-shadow:none!important;
+}
+nav button, .actions > button, .flex > div > button, #exportBtn, .csv-picker-button {
+  font-size:14px!important;
+}
+/* Keep long labels readable and prevent letter spacing from clipping them. */
+button, .csv-picker-button {white-space:normal; overflow-wrap:break-word;}
+
+
+/* 1.0: two equal, legible console keys in the library-connection row. */
+.connection-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-self:end;min-width:300px;flex:2 1 300px!important}
+.connection-actions button{min-width:0;width:100%;min-height:52px;white-space:normal;overflow-wrap:normal;word-break:normal;font-size:12px!important;letter-spacing:.035em!important;line-height:1.25!important;padding:10px 8px!important}
+@media(max-width:500px){.connection-actions{min-width:0;width:100%;grid-template-columns:1fr 1fr}}
+/* Real operation feedback only: do not equate a click with success. */
+button.forge-result-pending{box-shadow:inset 0 0 14px #e8a64b77,0 0 14px #e8a64baa,0 3px 3px #0009!important;border-color:#f7c47c!important}
+button.forge-result-success{box-shadow:inset 0 0 16px #61f0a499,0 0 17px #48df8dcc,0 3px 3px #0009!important;border-color:#4be69b!important}
+button.forge-result-failure{box-shadow:inset 0 0 16px #ff737399,0 0 17px #ff5c69cc,0 3px 3px #0009!important;border-color:#ff6771!important}
+@media(prefers-reduced-motion:reduce){button.forge-result-pending,button.forge-result-success,button.forge-result-failure{animation:none!important}}
+</style><header><h1 class="brand"><img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20128%20128%22%3E%3Crect%20width%3D%22128%22%20height%3D%22128%22%20rx%3D%2222%22%20fill%3D%22%23101c30%22%2F%3E%3Cg%20stroke-linejoin%3D%22round%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M28%2077H100L90%2089H77L72%20108H49L53%2089H38Z%22%20fill%3D%22%23526b86%22%20stroke%3D%22%23a8d9ee%22%20stroke-width%3D%225%22%2F%3E%3Cpath%20d%3D%22M17%2064H111L100%2077H28Z%22%20fill%3D%22%2391b8d1%22%20stroke%3D%22%23d7efff%22%20stroke-width%3D%224%22%2F%3E%3Cg%20transform%3D%22rotate%28-17%2061%2042%29%22%3E%3Crect%20x%3D%2239%22%20y%3D%2217%22%20width%3D%2244%22%20height%3D%2244%22%20rx%3D%223%22%20fill%3D%22%23e8a74f%22%20stroke%3D%22%23ffd28a%22%20stroke-width%3D%224%22%2F%3E%3Crect%20x%3D%2248%22%20y%3D%2226%22%20width%3D%2226%22%20height%3D%2226%22%20rx%3D%222%22%20fill%3D%22%2315283a%22%20stroke%3D%22%23ffe2a5%22%20stroke-width%3D%222%22%2F%3E%3Cpath%20d%3D%22M43%2019v40M79%2019v40%22%20stroke%3D%22%2317283a%22%20stroke-width%3D%223%22%20stroke-dasharray%3D%225%205%22%2F%3E%3C%2Fg%3E%3Cpath%20d%3D%22M90%2021L101%2012M100%2038L116%2036M26%2028L16%2020%22%20stroke%3D%22%23ffbe5b%22%20stroke-width%3D%224%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="8mm film frame striking a steel anvil"> NTV Channel Forge <span class="version-tag">v0.1.15</span></h1><p>Local library scanner • existing-channel editor • searchable library</p></header><main>
+<section><h2>1 · Load NTV Channel Definitions</h2><div class="flex"><div><label>Import Existing Channels.csv</label><div class="csv-picker"><label for="csvFile" class="csv-picker-button" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();document.getElementById('csvFile').click()}">Browse CSV…</label><span id="csvSelectedName" class="csv-picker-name" aria-live="polite">No file selected</span><input id="csvFile" class="csv-picker-native" type="file" accept=".csv,text/csv" aria-label="Import Existing Channels CSV"></div></div><select id="mode" hidden><option value="builtin">All channels</option></select></div><p class="small">All imported channels appear together. Edits remain in memory until you confirm a new CSV export. Unknown channel numbers do not create channels in NTV.</p></section>
+<section><h2>2 · Scan Your Media Library</h2><div class="flex"><div><label>Server</label><select id="kind"><option value="plex">Plex</option><option value="jellyfin">Jellyfin</option><option value="emby">Emby</option></select></div><div><label>Server URL</label><input id="url" autocomplete="off" spellcheck="false" placeholder="http://192.168.1.20:32400"></div><div><label>API Token</label><input id="token" type="password" autocomplete="new-password" spellcheck="false" placeholder="Read-only library access"></div><div class="connection-actions"><button id="scanLibrariesBtn" type="button" onclick="scan(this)">Scan Libraries</button><button id="testConnectionBtn" type="button" class="secondary" onclick="testConnection(this)">Test Connection</button></div></div><p class="small">The token is used only to query the server through this local application. Use a trusted server; HTTP connections do not encrypt tokens. No files are modified on your media server.</p><div class="connection-privacy" style="margin:12px 0;padding:12px;border:1px solid #65746b;background:#142425;border-radius:4px">
+<label style="display:flex;align-items:center;gap:9px;cursor:pointer"><input id="rememberConnection" type="checkbox" style="width:auto"> Remember this connection in this browser (including API token)</label>
+<div class="actions" style="margin-top:8px"><button type="button" class="secondary" onclick="toggleTokenVisibility()" id="revealToken">Show token</button><button type="button" class="secondary" onclick="clearSavedConnection()">Clear saved connection</button></div>
+<p class="small">Optional: remembered settings are stored in this browser profile, not encrypted. Anyone with access to the profile may be able to read the token. Do not use on shared computers. Browser autofill may also remember fields independently.</p></div><div id="scanStatus" class="status"></div><div class="terminal-meter" aria-label="Media library diagnostics"><div class="terminal-readout"><span class="readout-label">LIBRARY / CONNECTION</span><output id="forgeConn">NOT TESTED</output><div class="readout-caption">Last connection check</div></div><div class="terminal-readout amber"><span class="readout-label">LIBRARY / SCANNED TITLES</span><output id="forgeTitles">—</output><div class="readout-caption">Last completed scan</div></div></div></section>
+<section class="selector-panel"><h2>3 · Choose an Existing Channel</h2><div class="channel-picker"><div><label for="channelSearch">Find Channel by Name or Number</label><input id="channelSearch" placeholder="Search Channels" oninput="searchChannels()"></div><div><label for="channelSelect">Channel to Edit</label><select id="channelSelect" onchange="pick(this.value)"><option value="">Load a channels.csv to begin</option></select></div></div><p id="count" class="small">0 channels · 0 content rows</p><p class="small">Select an existing NTV channel. Both editing panes below update together. CSV uploads cannot create new NTV channels.</p><input id="selectedLabel" type="hidden"><table hidden><tbody id="channels"></tbody></table></section>
+<div class="editor-workspace"><section class="contents-panel"><h2>4 · Current Channel Contents</h2><p id="assignedSummary" class="small">Select a channel to inspect its contents.</p><div id="csvStats" class="csv-stats" aria-live="polite"></div><h3 class="section-subtitle">Explicit Titles in Imported CSV</h3><p class="small">Every explicit CSV title is shown, even if it cannot be matched to the scanned library. These are CSV entries, not a live NTV schedule.</p><div class="scroll"><table><thead><tr><th>Title</th><th>Release Year</th><th>Library Match</th><th>Action</th></tr></thead><tbody id="assigned"></tbody></table></div><div class="actions"><button class="secondary" onclick="removeAllChannelContent()">Clear Selected Channel Content</button></div><p class="small">Individual movies and TV series only. Existing Genre Rules are displayed read-only below.</p><div class="rules-panel"><div class="rules-heading"><div><h3>Genre Rules &amp; Possible Library Matches</h3><p id="rulesSummary" class="small">Existing NTV rules are read-only. Expand a rule to inspect matching library titles.</p></div><span class="pill" id="rulesCount">0 Rules</span></div><div id="genreExplorer" class="genre-explorer"></div><p class="small">Genre matches are inferred from scanned library metadata. They are not a verified NTV schedule. NTV may schedule additional, fewer, or different titles. Existing Genre Rules remain unchanged in CSV exports.</p></div></section>
+<section class="library-panel"><h2>5 · Find and Assign Titles</h2><div class="flex"><div><label>Media Type</label><select id="mediaType" onchange="renderMedia()"><option value="All">All</option><option value="Movie">Movies</option><option value="TV">TV Series</option></select></div><div><label>Genre</label><select id="genre" onchange="renderMedia()"><option>All</option></select></div><div><label>Decade</label><select id="decade" onchange="renderMedia()"><option value="All">All</option></select></div><div><label>Search</label><input id="search" oninput="renderMedia()" placeholder="Title"></div></div><label class="hide-existing-toggle" for="hideExisting"><input id="hideExisting" type="checkbox" checked onchange="renderMedia()"><span>Hide Titles Already Assigned to This Channel</span></label><p class="small" id="mediaSummary">Select a channel to compare against library titles. TV series are exported as one row per series.</p><div class="scroll"><table><thead><tr><th><input style="width:auto" type="checkbox" id="all" onchange="toggleAll(this.checked)"></th><th>Title</th><th>Year</th><th>Type</th><th>Genres</th><th>Status</th></tr></thead><tbody id="media"></tbody></table></div><div class="actions"><button onclick="addSelected(false)">Add Selected Titles</button><button class="secondary" onclick="addSelected(true)">Replace All Channel Content</button></div></section></div>
+<section><h2>6 · Review & Export</h2><p id="review" class="small"></p><p id="dirty" class="small">No unsaved edits.</p><p class="small">Changes stay in this browser session until you explicitly export a new file. Channel Forge never overwrites your original imported CSV. Export requires confirmation and uses a new timestamped filename.</p><div class="actions"><button id="exportBtn" onclick="download()">Review & Download CSV</button><button class="secondary" id="undoBtn" onclick="undo()" disabled>Undo Last Edit</button><button class="secondary" onclick="backup()">Save Project JSON</button><button class="secondary" onclick="document.getElementById('projectFile').click()">Open Project JSON</button><input id="projectFile" type="file" accept=".json" hidden onchange="restore(this)"></div><p id="status" class="status"></p></section></main><div id="forgeToast" role="status" aria-live="polite" aria-atomic="true"></div>
+<script>
+let projects={builtin:[],custom:[]}, media=[],current=null,checked=new Set();
+let undoStack=[], dirtyModes={builtin:false,custom:false}, lastExport='', importedBaseline=[];
+function snapshot(){undoStack.push({projects:JSON.parse(JSON.stringify(projects)),dirty:{...dirtyModes},current,mode:mode()});if(undoStack.length>40)undoStack.shift();$('undoBtn').disabled=false}
+function edited(message){dirtyModes[mode()]=true;renderDirty();status(message+' · Draft only; CSV not saved.')}
+function signature(r){return ['Channel Number','Channel Name','Title','Release Year'].map(k=>String(r[k]??'')).join('\u001f')}
+function diffRows(){let before=new Map(),after=new Map();for(let r of importedBaseline){let k=signature(r);before.set(k,(before.get(k)||0)+1)}for(let r of rows()){let k=signature(r);after.set(k,(after.get(k)||0)+1)}let added=0,removed=0;for(let [k,n] of after)added+=Math.max(0,n-(before.get(k)||0));for(let [k,n] of before)removed+=Math.max(0,n-(after.get(k)||0));return {added,removed}}
+function renderDirty(){$('dirty').innerHTML=dirtyModes[mode()]?'<span class="unsaved">● Unsaved draft changes — export required</span>':'No unexported edits in this collection.'}
+function undo(){if(!undoStack.length)return;let prev=undoStack.pop();projects=prev.projects;dirtyModes=prev.dirty;current=prev.current;$('mode').value=prev.mode;checked.clear();$('undoBtn').disabled=!undoStack.length;renderChannels();renderAssigned();renderMedia();renderDirty();status('Last edit undone. Original imported file is unchanged.')}
+window.addEventListener('beforeunload',e=>{if(Object.values(dirtyModes).some(Boolean)){e.preventDefault();e.returnValue=''}});
+async function busyButton(btn,work){if(btn){btn.disabled=true;btn.classList.add('busy','forge-working');btn.setAttribute('aria-busy','true');}try{return await work()}finally{if(btn){btn.disabled=false;btn.classList.remove('busy','forge-working');btn.removeAttribute('aria-busy')}}}
+const $=id=>document.getElementById(id),mode=()=> $('mode').value;
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rows=()=>projects[mode()];const channels=()=>{let map=new Map();for(const r of rows()){let n=String(r['Channel Number']);if(!map.has(n))map.set(n,{number:n,name:r['Channel Name'],count:0});map.get(n).count++}return [...map.values()].sort((a,b)=>Number(a.number)-Number(b.number))};
+function switchMode(){renderChannels();renderAssigned();renderMedia()}
+function searchChannels(){let q=$("channelSearch").value.trim().toLowerCase();let matches=channels().filter(c=>(c.number+" "+c.name).toLowerCase().includes(q));if(q&&matches.length===1){pick(matches[0].number);status("Selected channel "+matches[0].number+" — "+matches[0].name)}else{renderChannels();if(q&&matches.length>1)status(matches.length+" channels match. Choose one from the channel dropdown.")}}
+function renderChannels(){let cs=channels(),q=$('channelSearch').value.trim().toLowerCase(),matches=cs.filter(c=>(c.number+' '+c.name).toLowerCase().includes(q));$('count').textContent=cs.length+' channels · '+rows().length+' content rows · '+matches.length+' matching';$('channelSelect').innerHTML='<option value="">'+(cs.length?'Select a channel…':'Load a channels.csv to begin')+'</option>'+matches.map(c=>`<option value="${esc(c.number)}">${esc(c.number)} — ${esc(c.name)} (${c.count})</option>`).join('');if(current&&!matches.some(c=>c.number===current)){$('channelSelect').insertAdjacentHTML('beforeend',`<option value="${esc(current)}">${esc(current)} — selected (outside filter)</option>`)}$('channelSelect').value=current||'';$('selectedLabel').value=current?`${current} — ${cs.find(x=>x.number===current)?.name||''}`:'';let diff=diffRows();$('review').textContent=`All Channels: ${cs.length} | Current Rows: ${rows().length} | Added: ${diff.added} | Removed: ${diff.removed}. Export includes all edited rows.`;renderDirty()}
+
+function pick(n){current=n;checked.clear();renderChannels();renderAssigned();renderMedia()}
+function normTitle(t){return String(t??'').normalize('NFKC').trim().replace(/\s+/g,' ').toLocaleLowerCase()}
+function entryKey(t,y){return normTitle(t)+'|'+String(y??'').trim()}
+function assignedRows(){return current?rows().filter(r=>r['Channel Number']===current):[]}
+function assignedKeys(){return new Set(assignedRows().filter(r=>String(r['Release Year']).toLowerCase()!=='various').map(r=>entryKey(r.Title,r['Release Year'])))}
+function mediaHas(row){return media.some(x=>entryKey(x.title,x.year)===entryKey(row.Title,row['Release Year']))}
+function renderAssigned(){let all=assignedRows(),assigned=all.filter(r=>String(r['Release Year']).toLowerCase()!=='various');const rules=all.filter(r=>String(r['Release Year']).toLowerCase()==='various');
+ const found=media.length?assigned.filter(mediaHas).length:null;
+ $('assignedSummary').textContent=current?`Channel ${current} · Imported CSV contents (not live NTV schedule)`:'Select a channel to inspect its contents.';
+ $('csvStats').innerHTML=current?`<span class="pill">${all.length} CSV Entries</span><span class="pill">${assigned.length} Explicit Titles</span><span class="pill">${rules.length} Genre Rules</span><span class="pill">${found===null?'Library Not Scanned':found+' Found in Library'}</span>${found===null?'':`<span class="pill">${assigned.length-found} Not Found in Library</span>`}`:'';$('assigned').innerHTML=assigned.map(r=>{let i=all.indexOf(r);return `<tr><td>${esc(r.Title)}</td><td>${esc(r['Release Year'])}</td><td>${!media.length?'<span class="small">Not scanned</span>':mediaHas(r)?'<span class="pill">Found in Library</span>':'<span class="warn">Not Found in Library</span>'}</td><td><button class="danger" onclick="removeAssigned(${i})">Remove</button></td></tr>`}).join('')||'<tr><td colspan="4" class="small">No individual titles assigned.</td></tr>';renderRules()}
+function ruleMatches(rule){
+ const suffix=rule.match(/\s+(Movies|TV Shows|Shows|Series)$/i);
+ const genre=(suffix?rule.slice(0,-suffix[0].length):rule).trim();
+ const type=suffix?(/movies/i.test(suffix[1])?'Movie':'TV'):null;
+ const normalized=s=>String(s||'').toLowerCase().replace(/[^a-z0-9]/g,'');
+ const aliases={'scifi':'sciencefiction','sciencefiction':'scifi'};
+ const wanted=normalized(genre);
+ const matches=media.filter(x=>(!type||x.type===type)&&(x.genres||[]).some(g=>{let v=normalized(g);return v===wanted||aliases[v]===wanted||aliases[wanted]===v}));
+ const unique=new Map();for(const x of matches)unique.set(entryKey(x.title,x.year)+'|'+x.type,x);
+ return [...unique.values()].sort((a,b)=>a.title.localeCompare(b.title));
+}
+let expandedGenres=new Set();
+function toggleGenreRule(i){if(expandedGenres.has(i))expandedGenres.delete(i);else expandedGenres.add(i);renderRules()}
+function renderRules(){
+ const rules=assignedRows().filter(r=>String(r['Release Year']).toLowerCase()==='various');
+ $('rulesCount').textContent=rules.length+' Rule'+(rules.length===1?'':'s');
+ $('rulesSummary').textContent=current?`Channel ${current} · ${rules.length} Existing Rules (Read-Only)`:'Select a Channel to Inspect Its Rules.';
+ const explicit=assignedKeys();
+ $('genreExplorer').innerHTML=rules.map((r,i)=>{
+  const matches=ruleMatches(r.Title), open=expandedGenres.has(i);
+  const count=media.length?`${matches.length} Possible ${matches.length===1?'Match':'Matches'}`:'Scan Library';
+  return `<div class="genre-item"><button type="button" class="genre-toggle secondary" aria-expanded="${open}" onclick="toggleGenreRule(${i})"><span>${open?'▾':'▸'} ${esc(r.Title)}</span><span class="pill">${count}</span></button>${open?`<div class="genre-details">${!media.length?'<p class="small">Scan Your Media Library to View Matching Titles.</p>':matches.length?`<div class="genre-results"><table><thead><tr><th>Title</th><th>Year</th><th>Media Type</th><th>Library Genres</th><th>Channel Status</th></tr></thead><tbody>${matches.map(x=>`<tr><td>${esc(x.title)}</td><td>${esc(x.year)}</td><td>${esc(x.type)}</td><td>${esc((x.genres||[]).join(', '))}</td><td>${explicit.has(entryKey(x.title,x.year))?'Explicitly Assigned':'Not Explicitly Assigned (Possible Rule Match)'}</td></tr>`).join('')}</tbody></table></div>`:'<p class="small">No Matching Titles Found in Scanned Library Metadata.</p>'}</div>`:''}</div>`
+ }).join('')||'<p class="small">No Genre Rules for This Channel.</p>';
+}
+
+function removeAssigned(i){if(!current)return;let indices=rows().map((r,j)=>r['Channel Number']===current?j:-1).filter(j=>j>=0);let idx=indices[i];if(idx===undefined)return;snapshot();rows().splice(idx,1);renderChannels();renderAssigned();renderMedia();edited('Removed entry from channel')}
+function removeAllChannelContent(){if(!current)return status('Select a channel first');if(!confirm('Clear all individual titles from this channel? Genre rules will be preserved. You can restore your project or reimport the CSV.'))return;snapshot();projects[mode()]=rows().filter(r=>r['Channel Number']!==current||String(r['Release Year']).toLowerCase()==='various');renderChannels();renderAssigned();renderMedia();edited('Channel rows cleared; Undo is available')}
+function filtered(){let t=$('mediaType').value,g=$('genre').value,d=$('decade').value,s=$('search').value.toLowerCase();return media.filter(x=>(t==='All'||x.type===t)&&(g==='All'||x.genres.includes(g))&&(d==='All'||Math.floor(Number(x.year)/10)*10===Number(d))&&x.title.toLowerCase().includes(s))}
+function renderMedia(){let assigned=assignedKeys(),all=filtered(),visible=all.filter(x=>!$('hideExisting').checked||!assigned.has(entryKey(x.title,x.year))),list=visible.slice(0,1000);$('mediaSummary').textContent=`${all.length} matching library titles · ${all.length-visible.length} already assigned hidden · showing ${list.length}${visible.length>1000?' (first 1,000)':''}.`;$('media').innerHTML=list.map(x=>{let id=media.indexOf(x),exists=assigned.has(entryKey(x.title,x.year));return `<tr><td><input type="checkbox" style="width:auto" data-id="${id}" ${checked.has(id)?'checked':''} ${exists?'disabled':''} onchange="check(${id},this.checked)"></td><td>${esc(x.title)}</td><td>${esc(x.year)}</td><td>${esc(x.type)}</td><td>${esc(x.genres.join(', '))}</td><td>${exists?'<span class="pill">Already added</span>':'<span class="small">Available</span>'}</td></tr>`}).join('')||'<tr><td colspan="6" class="small">No titles to show.</td></tr>';$('all').checked=false}
+function check(i,v){if(v)checked.add(i);else checked.delete(i)}function toggleAll(v){let assigned=assignedKeys();for(let x of filtered().filter(x=>!assigned.has(entryKey(x.title,x.year))).slice(0,1000)){let i=media.indexOf(x);check(i,v)}renderMedia()}
+function status(s){$('status').textContent=s}
+function addSelected(replace){if(!current)return status('Select an existing channel first');let name=channels().find(x=>x.number===current)?.name;if(!name)return status('Channel is not present in this CSV');let selected=[...checked].map(i=>media[i]).filter(Boolean);if(!selected.length)return status('Select available media titles first');if(replace&&!confirm('Replace all individual titles for this channel with the selected titles? Existing genre rules will be preserved. This changes the draft only; Undo is available.'))return;snapshot();let target=replace?rows().filter(r=>r['Channel Number']!==current||String(r['Release Year']).toLowerCase()==='various'):rows();let existing=new Set(target.filter(r=>r['Channel Number']===current).map(r=>entryKey(r.Title,r['Release Year'])));let added=0;for(let x of selected){let key=entryKey(x.title,x.year);if(existing.has(key))continue;target.push({'Channel Number':current,'Channel Name':name,'Title':x.title,'Release Year':String(x.year||'')});existing.add(key);added++}projects[mode()]=target;checked.clear();renderChannels();renderAssigned();renderMedia();edited(`Added ${added} title(s) to channel ${current}; duplicates skipped`)}
+const forgeResultTimers=new WeakMap();
+function forgeSetResult(btn,state){
+ if(!btn)return;
+ clearTimeout(forgeResultTimers.get(btn));
+ btn.classList.remove('forge-result-pending','forge-result-success','forge-result-failure');
+ if(!state)return;
+ btn.classList.add('forge-result-'+state);
+ if(state!=='pending')forgeResultTimers.set(btn,setTimeout(()=>btn.classList.remove('forge-result-'+state),4000));
+}
+async function testConnection(btn){
+ btn=btn||document.getElementById('testConnectionBtn');forgeSetResult(btn,'pending');
+ await busyButton(btn,async()=>{
+  try{
+   let kind=$('kind').value;$('scanStatus').textContent='⏳ Testing '+kind.toUpperCase()+' connection…';
+   let res=await fetch('/forge/api/test-connection',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({kind,url:$('url').value,token:$('token').value})});
+   let d=await res.json();if(!res.ok)throw Error(d.error||'HTTP '+res.status);
+   let success=Array.isArray(d.checks)&&d.checks.length>0&&d.checks.every(x=>x.status===200);
+   $('scanStatus').textContent=(success?'✓ Connection successful: ':'⚠ Connection check failed: ')+(d.checks||[]).map(x=>x.endpoint+': '+(x.status||'Error')+' ('+x.detail+')').join(' | ');
+   forgeSetResult(btn,success?'success':'failure');
+  }catch(e){$('scanStatus').textContent='✗ Connection test failed: '+e.message;forgeSetResult(btn,'failure')}
+ });
+}
+async function scan(btn){
+ btn=btn||document.getElementById('scanLibrariesBtn');forgeSetResult(btn,'pending');
+ const success=await busyButton(btn,scanCore);
+ forgeSetResult(btn,success?'success':'failure');
+ return success;
+}
+async function scanCore(){try{$('scanStatus').textContent='Scanning media server…';let res=await fetch('/forge/api/scan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({kind:$('kind').value,url:$('url').value,token:$('token').value})});let d=await res.json();if(!res.ok)throw Error(d.error);media=d.items;let genres=[...new Set(media.flatMap(x=>x.genres))].sort();$('genre').innerHTML='<option>All</option>'+genres.map(g=>`<option>${esc(g)}</option>`).join('');let decades=[...new Set(media.filter(x=>x.year).map(x=>Math.floor(x.year/10)*10))].sort();$('decade').innerHTML='<option>All</option>'+decades.map(d=>`<option value="${d}">${d}s</option>`).join('');renderMedia();renderRules();$('scanStatus').textContent=`Scanned ${media.length} distinct movie and series titles.`;return true}catch(e){$('scanStatus').textContent='Scan failed: '+e.message;return false}}
+async function importCSV(text){let res=await fetch('/forge/api/parse',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({csv:text})});let d=await res.json();if(!res.ok)throw Error(d.error);if(dirtyModes[mode()]&&!confirm('Discard unsaved draft edits and load another CSV?'))return;projects[mode()]=d.rows;importedBaseline=JSON.parse(JSON.stringify(d.rows));dirtyModes[mode()]=false;undoStack=[];$('undoBtn').disabled=true;current=null;renderChannels();renderAssigned();renderMedia();status('Imported '+d.rows.length+' rows; original CSV remains untouched')}
+$('csvFile').onchange=async e=>{const f=e.target.files&&e.target.files[0];if(!f)return;$('csvSelectedName').textContent=f.name;try{await importCSV(await f.text())}catch(e){status(e.message)}};
+async function loadSample(){let btn=document.activeElement;return busyButton(btn?.tagName==='BUTTON'?btn:null,loadSampleCore)}
+async function loadSampleCore(){try{await importCSV(await (await fetch('/forge/api/sample')).text())}catch(e){status(e.message)}}
+function saveBlob(text,name,type){let a=document.createElement('a'),url=URL.createObjectURL(new Blob([text],{type}));a.href=url;a.download=name;a.click();forgeNotify('Download requested: '+name,'success');setTimeout(()=>URL.revokeObjectURL(url),1000)}
+async function download(){
+  let cs=channels();
+  if(!rows().length)return status('Nothing to export. Load a CSV first.');
+  const delta=diffRows();
+  if(!delta.added&&!delta.removed){
+    status('No changes detected compared with the imported CSV. Add or remove an entry before exporting.');
+    forgeNotify('No CSV changes detected — export cancelled.','error');return;
+  }
+  const summary=`Review CSV Changes\n\nAdded: ${delta.added} rows\nRemoved: ${delta.removed} rows\nFinal: ${rows().length} rows across ${cs.length} channels\n\nDownload a NEW CSV containing these changes? Your original file will not be overwritten.`;
+  if(!confirm(summary))return;
+  await busyButton($('exportBtn'),async()=>{
+    try{
+      status('Preparing edited CSV…');
+      let res=await fetch('/forge/api/export',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({rows:rows(),mode:mode()})});
+      if(!res.ok){let d=await res.json();throw Error(d.error)}
+      let csvText=await res.text();
+      // Verify that the server's CSV contains the same number of data records as the edited draft.
+      let verification=await fetch('/forge/api/parse',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({csv:csvText})});
+      if(!verification.ok)throw Error('Exported CSV failed validation');
+      let parsed=(await verification.json()).rows;
+      if(parsed.length!==rows().length)throw Error('Export row count mismatch; download blocked');
+      let expected=new Map(),actual=new Map();
+      for(let r of rows()){let k=signature(r);expected.set(k,(expected.get(k)||0)+1)}
+      for(let r of parsed){let k=signature(r);actual.set(k,(actual.get(k)||0)+1)}
+      if(expected.size!==actual.size||[...expected].some(([k,n])=>actual.get(k)!==n))throw Error('Export content mismatch; download blocked');
+      let stamp=new Date().toISOString().replace(/[:.]/g,'-');
+      let filename='channels_forge_'+stamp+'.csv';
+      saveBlob(csvText,filename,'text/csv');
+      // Preserve baseline until another CSV is explicitly imported; export is not a commit to the original.
+      status(`Download requested: ${filename}. Verified ${parsed.length} rows; ${delta.added} added, ${delta.removed} removed. Original CSV unchanged.`);
+    }catch(e){status('Export failed: '+e.message);forgeNotify('Export failed: '+e.message,'error')}
+  });
+}
+
+function backup(){saveBlob(JSON.stringify({version:2,projects,media,importedBaseline},null,2),'channel_forge_project.json','application/json')}
+async function restore(el){try{let p=JSON.parse(await el.files[0].text());if(!p.projects||!Array.isArray(p.projects.builtin))throw Error('Invalid project');if(Object.values(dirtyModes).some(Boolean)&&!confirm('Discard unsaved edits and open this project?'))return;projects={builtin:[...p.projects.builtin,...(Array.isArray(p.projects.custom)?p.projects.custom:[])],custom:[]};importedBaseline=Array.isArray(p.importedBaseline)?p.importedBaseline:[];media=Array.isArray(p.media)?p.media:[];dirtyModes={builtin:true,custom:false};undoStack=[];$('undoBtn').disabled=true;current=null;renderChannels();renderAssigned();renderMedia();status('Project restored as an unexported draft')}catch(e){status(e.message)}}
+renderChannels();renderAssigned();renderMedia();renderDirty();
+
+// Universal feedback: immediate press acknowledgment; operation results remain separate.
+let forgeToastTimer;
+function forgeNotify(message,kind='info'){
+  const el=document.getElementById('forgeToast');if(!el)return;
+  el.textContent=message;el.className='show '+kind;
+  clearTimeout(forgeToastTimer);forgeToastTimer=setTimeout(()=>{el.classList.remove('show')},4200);
+}
+document.addEventListener('click',e=>{
+  const btn=e.target.closest('button');if(!btn||btn.disabled)return;
+  btn.classList.remove('forge-pressed');void btn.offsetWidth;btn.classList.add('forge-pressed');
+  setTimeout(()=>btn.classList.remove('forge-pressed'),240);
+  const label=(btn.textContent||'Action').trim().replace(/\s+/g,' ').slice(0,70);
+  if(btn.id!=='scanLibrariesBtn'&&btn.id!=='testConnectionBtn')forgeNotify(label+' — click registered');
+},true);
+for(const id of ['status','scanStatus']){
+  const target=document.getElementById(id);if(!target)continue;
+  new MutationObserver(()=>{
+    const message=target.textContent.trim();if(!message)return;
+    const kind=/failed|error|rejected|not present|select .* first|nothing to|invalid/i.test(message)?'error':/successful|scanned |imported |download requested|restored|undone|added |removed |draft only/i.test(message)?'success':'info';
+    forgeNotify(message,kind);
+  }).observe(target,{childList:true,characterData:true,subtree:true});
+}
+
+
+
+// Optional, per-browser settings. Never send credentials to the Forge project backup.
+const NTV_CONNECTION_STORAGE_KEY='ntvforge.channel.connection.v1';
+function toggleTokenVisibility(){const t=$('token');t.type=t.type==='password'?'text':'password';$('revealToken').textContent=t.type==='password'?'Show token':'Hide token'}
+function saveRememberedConnection(){try{if(!$('rememberConnection').checked){localStorage.removeItem(NTV_CONNECTION_STORAGE_KEY);return}localStorage.setItem(NTV_CONNECTION_STORAGE_KEY,JSON.stringify({kind:$('kind').value,url:$('url').value,token:$('token').value}))}catch(e){$('scanStatus').textContent='Browser storage unavailable: '+e.message}}
+function clearSavedConnection(){try{localStorage.removeItem(NTV_CONNECTION_STORAGE_KEY)}catch(e){}$('rememberConnection').checked=false;$('kind').value='plex';$('url').value='';$('token').value='';$('token').type='password';$('revealToken').textContent='Show token';$('scanStatus').textContent='NTV Forge saved connection cleared. Firefox may separately remember form entries; clear those in Firefox settings if they return.'}
+function initConnectionPrivacy(){try{const raw=localStorage.getItem(NTV_CONNECTION_STORAGE_KEY);if(raw){const c=JSON.parse(raw);if(c&&typeof c==='object'){$('rememberConnection').checked=true;if(['plex','jellyfin','emby'].includes(c.kind))$('kind').value=c.kind;$('url').value=String(c.url||'');$('token').value=String(c.token||'')}}}catch(e){}for(const id of ['kind','url','token'])$(id).addEventListener(id==='kind'?'change':'input',saveRememberedConnection);$('rememberConnection').addEventListener('change',saveRememberedConnection)}
+window.addEventListener('DOMContentLoaded',initConnectionPrivacy);
+
+</script><script>(function(){const target=document.getElementById('scanStatus');if(!target)return;const conn=document.getElementById('forgeConn'),titles=document.getElementById('forgeTitles');function sync(){const t=target.textContent||'';if(/Connection successful/i.test(t))conn.textContent='CONNECTED';else if(/Connection check failed|Connection test failed|Scan failed/i.test(t))conn.textContent='FAILED';const m=t.match(/Scanned (\d+) distinct/);if(m){titles.textContent=m[1];conn.textContent='SCAN OK'}}new MutationObserver(sync).observe(target,{childList:true,characterData:true,subtree:true});sync()})();</script></html>
