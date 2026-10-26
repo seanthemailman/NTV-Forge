@@ -1,0 +1,31 @@
+# Python temporary files
+__pycache__/
+*.pyc
+*.pyo
+
+# Windows application builds
+build/
+dist/
+*.exe
+*.zip
+
+# Downloaded third-party tools
+tools/
+
+# Python virtual environments
+.venv/
+venv/
+
+# Local settings and credentials
+.env
+.env.*
+*.log
+*.db
+*.sqlite
+*.sqlite3
+
+# Editor and operating system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
