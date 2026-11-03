@@ -5,8 +5,8 @@ a = Analysis(
     ['tray_launcher.py'],
     pathex=[],
     binaries=[],
-    datas=[('index.html', '.'), ('suite.html', '.'), ('channel_forge', 'channel_forge')],
-    hiddenimports=['channel_forge.app'],
+    datas=[('forge-logo.png', '.'), ('forge-logo-small.png', '.'), ('index.html', '.'), ('suite.html', '.'), ('archive.html', '.'), ('forge_picker.js', '.'), ('channel_forge', 'channel_forge')],
+    hiddenimports=['archive_forge', 'channel_forge.app'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -32,6 +32,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    icon=['forge.ico'],
 )
 coll = COLLECT(
     exe,

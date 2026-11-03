@@ -1,0 +1,11 @@
+NTV Forge 1.2.1b — SHORT PLAYLIST TEST
+
+IMPORTANT: Source and Windows builder, NOT precompiled EXE.
+The tools/ directory is included, but binary tools are NOT included because they are large third-party downloads.
+EITHER copy the complete tools folder from your working 1.1 installation OR run Download Portable Tools.bat with internet access.
+Run Build Windows EXE.bat, then launch dist\NTV Forge\NTV Forge.exe.
+Do not overwrite your working installation. Back up project.json and playlist-progress.json.
+
+Changes: skip unavailable playlist items; limit repeated failures; pre-resolve next sequential video (shuffle prefetch not yet supported); diagnostic ZIP includes original log if present; fixes software fallback selection.
+
+LIMITATION: No continuous encoder pipeline or frame rate normalization yet. Short clips may still stutter. Test in separate folder before sharing.

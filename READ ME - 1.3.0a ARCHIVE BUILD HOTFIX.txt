@@ -1,0 +1,14 @@
+1.3.0a fixes the Windows PyInstaller build script from 1.3.0.
+The previous script did not bundle archive.html or archive_forge.py,
+so the /archive request failed in the built EXE.
+
+This update adds archive.html as PyInstaller data and explicitly
+includes archive_forge as a hidden import. It verifies archive.html
+in the resulting distribution. No streaming/subtitle logic changed.
+
+Stop the running Forge tray app before rebuilding.
+Copy existing tools and project.json into the new source folder,
+run Build Windows EXE.bat, then launch the newly built EXE
+from dist\NTV Forge. Keep the previous version as backup.
+
+Windows build/runtime has not been tested in this environment.

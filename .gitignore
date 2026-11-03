@@ -1,31 +1,32 @@
-# Python temporary files
-__pycache__/
-*.pyc
-*.pyo
-
-# Windows application builds
-build/
+# Private configuration and credentials
+project.json
+*.env
+.env*
+!.env.example
+*cookies*.txt
+*token*.json
+*credentials*.json
+# Generated output and logs
 dist/
-*.exe
-*.zip
-
-# Downloaded third-party tools
-tools/
-
-# Python virtual environments
-.venv/
-venv/
-
-# Local settings and credentials
-.env
-.env.*
+build/
+*.spec
+__pycache__/
+*.py[cod]
 *.log
-*.db
-*.sqlite
-*.sqlite3
-
-# Editor and operating system files
+logs/
+NTV-Forge-Diagnostics*.zip
+*.tmp
+*.part
+*.ytdl
+.DS_Store
 .vscode/
 .idea/
-.DS_Store
-Thumbs.db
+# Bundled portable executables and downloads
+tools/*
+!tools/README.txt
+# Keep the Windows build
+specification
+!NTV Forge.spec
+# Exclude personal channel
+configurations
+channel_forge/channels.csv

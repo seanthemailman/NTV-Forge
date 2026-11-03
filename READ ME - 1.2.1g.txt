@@ -1,0 +1,7 @@
+NTV Forge 1.2.1g — Classic HLS regression comparison
+
+Restores 1.1 Classic HLS muxer parameters: 4-second segments, 8-entry playlist, original append/delete flags, and original FFmpeg command layout. Experimental continuous muxer is disabled. Other features from 1.2.1f remain (including diagnostics, cooldown, XMLTV, compact terminal and multiview HTTP timing).
+
+This is NOT an exact 1.1 engine rollback: the newer playlist worker, resolver, logging, and HTTP server remain. Compare playback against the original 1.1 installation with the same source and one viewer first.
+
+Copy full tools directory from your working installation before running Build Windows EXE.bat. Preserve your project.json backup.

@@ -1,0 +1,26 @@
+NTV FORGE 1.2.3 — REAL CAPTIONS BETA
+
+This build adds a second subtitle-test route for real English captions on
+INDIVIDUAL YouTube videos. The previous /subtitle-test/ route is unchanged.
+
+WHAT TO TEST
+1. Build and launch Forge as usual. Copy your existing tools folder first.
+2. Pick a single YouTube video channel that has English captions, NOT a playlist.
+3. Start its normal video stream in NTV to initialize HLS.
+4. Create a separate temporary NTV live channel with this URL:
+   http://YOUR-FORGE-IP:8765/subtitle-live/YOUR-CHANNEL-ID/master.m3u8
+5. Play it and select Subtitles > English (Forge).
+6. Compare displayed captions with the video audio.
+
+NOTES
+- The first request may take time while yt-dlp retrieves the caption file.
+- If a video has no English captions, this test URL returns 404 rather than
+  advertising a subtitle track that cannot be populated.
+- Only single YouTube video sources are supported in this beta.
+- Caption timing is an initial approximation using HLS segment numbers and
+  the four-second segment target. Some video/keyframe combinations may drift.
+- The source video's subtitles may be human-authored or auto-generated.
+- No subtitle burning, changes to the Quick Sync pipeline, or extra video
+  encoding are introduced.
+- This is a test, not a production-ready caption synchronizer.
+- Keep your 1.2.2 build as a fallback.

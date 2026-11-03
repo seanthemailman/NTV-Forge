@@ -1,0 +1,23 @@
+NTV FORGE 1.2.1c — HLS CONTINUITY EXPERIMENT
+
+Changes from 1.2.1b:
+- Keep HLS media sequence numbers moving forward between short clips.
+- Mark clip boundaries as HLS discontinuities for player timestamp resets.
+- Do not erase the active HLS playlist/segments during encoder fallback.
+- Use 2-second HLS segments, a 12-segment playlist and extra segment retention.
+- Increase idle shutdown to four minutes.
+- Log clip starts, segment sequences, encoder exits, and errors in diagnostics.
+- Retain unavailable-video skipping and shuffle-resume logic from 1.2.1b.
+
+TOOLS: This ZIP contains the tools/ folder and the portable tools downloader,
+NOT the large FFmpeg, Streamlink, yt-dlp and Deno binaries. Before building,
+copy the complete tools/ folder from your working Forge install, OR run
+Download Portable Tools.bat. Verify the downloaded tools before building.
+
+TEST: Build in a separate directory. Test the same 480p shuffled Vine playlist.
+Check whether a video pauses and restarts mid-clip. Download the diagnostic
+report if it still happens. Keep your previous working version as a backup.
+
+LIMITATIONS: Experimental. No Windows runtime or NTV playback validation was
+possible here. A fully continuous FFmpeg process is not implemented; short
+clips can still exhibit pauses at clip boundaries. If problems worsen, revert.

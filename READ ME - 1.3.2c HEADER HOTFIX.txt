@@ -1,0 +1,13 @@
+NTV Forge 1.3.2c — Header Stability Hotfix
+
+Changes:
+- Lock header to a predictable height and two-column grid; monitor and workspace tabs remain side-by-side during playlist refresh.
+- Expanded system monitor overlays content below the header, rather than changing the header height.
+- Diagnostic Report button matches Forge cream action-button styling.
+- Diagnostic Report button reads current server version from /api/events (no stale 1.2.1b label).
+- Easter egg credit: hover the left television logo to see “Forged with Aether · imagined with Sean”.
+- Server diagnostics version updated to 1.3.2c.
+
+No changes to archive downloads, streaming engine, subtitles or achievement persistence.
+
+Test on Windows: open/close system monitor on each workspace, refresh a saved source and verify the header stays one row; inspect diagnostics button and version. Keep 1.3.2b as fallback.

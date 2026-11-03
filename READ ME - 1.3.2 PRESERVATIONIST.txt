@@ -1,0 +1,15 @@
+NTV Forge 1.3.2 — Preservationist Update
+
+Based on 1.3.1; streaming/archiving engines unchanged.
+New pixel-art TV/anvil/hanger branding, Windows tray and EXE icon.
+Expand green monitor, type arrows ↑↑↓↓←→←→ then BA (case insensitive) and Enter.
+Free typing, Escape clears, incorrect inputs do nothing. Archive hidden until unlock.
+Unlock saved in project.json and included in Link Forge backup export/restore.
+Reset Achievement in expanded monitor relocks Archive without deleting media.
+Blue archive progress is completed video count, not bytes.
+Retro CSV/JSON picker on localhost, native browser fallback for remote access.
+
+This Easter egg is not a security boundary; keep Forge on trusted networks.
+Do not share project.json containing private source URLs or credentials.
+Build Windows EXE.bat requires Windows, Python, and portable tools.
+Windows EXE/tray behavior must be tested on the user's computer.

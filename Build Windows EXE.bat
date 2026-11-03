@@ -1,7 +1,7 @@
 @echo off
 setlocal
 cd /d "%~dp0"
-echo Building NTV Forge 1.0 for Windows (silent tray release)...
+echo Building NTV Forge 1.3.2c for Windows (silent tray release)...
 echo.
 
 rem Check tools BEFORE PyInstaller clears the previous distribution.
@@ -9,7 +9,16 @@ if not exist "tools\ffmpeg.exe" goto missingtools
 if not exist "tools\yt-dlp.exe" goto missingtools
 if not exist "tools\deno.exe" goto missingtools
 if not exist "tools\streamlink-portable\bin\streamlink.exe" goto missingtools
-if not exist "project.json" if not exist "dist\NTV Forge\project.json" goto missingproject
+rem Public source checkout: create a blank local configuration if missing.
+if not exist "project.json" if not exist "dist\NTV Forge\project.json" (
+  if exist "project.example.json" (
+    copy /Y "project.example.json" "project.json" >nul
+    if errorlevel 1 goto fail
+    echo Created blank project.json from project.example.json
+  ) else (
+    goto missingproject
+  )
+)
 
 rem Preserve user channels/settings from the existing distribution.
 rem Keep this backup if the build fails, so the configuration can be recovered.
@@ -31,7 +40,7 @@ set "PYTHON=py -3"
 :build
 %PYTHON% -m pip install --upgrade pyinstaller pystray pillow
 if errorlevel 1 goto fail
-%PYTHON% -m PyInstaller --noconfirm --clean --onedir --windowed --name "NTV Forge" --add-data "index.html;." --add-data "suite.html;." --add-data "channel_forge;channel_forge" --hidden-import channel_forge.app tray_launcher.py
+%PYTHON% -m PyInstaller --noconfirm --clean --onedir --windowed --name "NTV Forge" --icon "forge.ico" --add-data "forge-logo.png;." --add-data "forge-logo-small.png;." --add-data "index.html;." --add-data "suite.html;." --add-data "archive.html;." --add-data "forge_picker.js;." --hidden-import archive_forge --add-data "channel_forge;channel_forge" --hidden-import channel_forge.app tray_launcher.py
 if errorlevel 1 goto fail
 
 if exist "project.build-backup.json" (
@@ -60,6 +69,10 @@ if exist "tools\THIRD_PARTY" (
   if errorlevel 1 goto fail
 )
 
+if not exist "dist\NTV Forge\_internal\archive.html" (
+  echo ERROR: Archive Forge HTML was not bundled.
+  goto fail
+)
 if not exist "dist\NTV Forge\NTV Forge.exe" goto fail
 if not exist "dist\NTV Forge\project.json" goto fail
 if not exist "dist\NTV Forge\tools\ffmpeg.exe" goto fail

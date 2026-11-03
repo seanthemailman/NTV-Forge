@@ -1,0 +1,14 @@
+NTV Forge 1.3.1 — Interface Update
+
+Built on working 1.3.0a archive release. No archive/streaming encoding logic changes.
+- Responsive header and encoder control moved to Link Forge workspace bar.
+- Click green monitor to expand the event history. Command input reserved for future.
+- Blue Archive Operations Monitor.
+- Retro server-side folder browser for Archive Forge destination, host-local only.
+  Supports existing mapped drives and UNC paths typed in manually.
+- Shared picker styling/script loaded in Link and Channel workspaces; existing
+  CSV/JSON browser file import remains browser-native for safety and compatibility.
+- No arbitrary remote file browsing: folder API restricted to localhost.
+- This release does not implement Konami code or archive queue.
+
+Windows EXE must be rebuilt using Build Windows EXE.bat. Keep 1.3.0a as fallback.

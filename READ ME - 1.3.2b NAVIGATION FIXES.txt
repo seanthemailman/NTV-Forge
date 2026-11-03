@@ -1,0 +1,9 @@
+NTV Forge 1.3.2b — Four focused fixes
+
+1. Channel Forge loads the shared retro file navigator script; CSV selection uses existing CSV import with native fallback.
+2. The expanded System Monitor stays in the parent shell across workspace tabs, with sticky positioning.
+3. Achievement announcement clears after five seconds while remaining in the monitor event history.
+4. The right-side TV logo is removed from the layout when the Archive Forge button appears.
+
+Streaming and archive engines unchanged from 1.3.2.
+Windows runtime has not been tested in this environment.

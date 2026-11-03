@@ -1,0 +1,11 @@
+NTV Forge 1.2.1d - Experimental continuous HLS muxer and fixed green terminal monitor.
+
+Copy the FULL tools folder from your working Forge installation, including executables, before building. The included tools directory contains a README only. Alternatively run Download Portable Tools.bat.
+
+Backup your project and playlist-progress.json first. Extract separately and build with Build Windows EXE.bat.
+
+The top system monitor is in the fixed outer banner, visible on both Forge tabs. UI notifications are sent to the monitor and backend events are polled every 3 seconds.
+
+For Vine playlist test: edit source, select Continuous HLS muxer (experimental), save, then restart playback/channel so a new session starts. Classic is the unchanged default. This experimental mode uses a persistent HLS muxer but still starts a per-clip encoder; it is NOT proven gapless and may have timestamp compatibility issues. Switch back to Classic if broken.
+
+Tools binaries are NOT included in this source ZIP. Do not overwrite your working Forge installation.

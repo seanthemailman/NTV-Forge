@@ -1,0 +1,21 @@
+NTV Forge 1.2.4b — YouTube Stream Reliability
+
+Changes:
+- Cache resolved YouTube playback URLs for up to four minutes, never past their signed expiry.
+- Share simultaneous requests for the same YouTube video (single-flight).
+- Keep caption data cached for six hours in memory.
+- Retain the existing 30-minute verification cooldown and existing HLS session reuse.
+- Preserve 1.2.4a subtitle timeline and Quick Sync encoding paths.
+- Update diagnostics version label.
+
+Limitations:
+- This cannot bypass YouTube verification, and cannot guarantee existing streams survive signed URL expiry or platform restrictions.
+- The cache is in memory and resets when Forge exits.
+- Not validated with actual Windows NTV playback.
+
+Installation:
+1. Keep 1.2.4a as backup.
+2. Extract this ZIP into its own folder.
+3. Copy your tools folder from the old version.
+4. Run Build Windows EXE.bat and launch Forge.
+5. Test 2-3 channels for an extended period; export diagnostics if failures recur.

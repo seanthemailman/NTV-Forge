@@ -1,0 +1,21 @@
+NTV Forge 1.3.0 — Archive Forge beta
+
+Built from the 1.2.4c streaming baseline. Subtitle development is paused.
+Open Forge at http://127.0.0.1:8765 and select 03 / ARCHIVE FORGE.
+
+1. Paste a YouTube playlist URL and click ANALYZE STORAGE.
+2. Check video count, runtime, and rough 2 Mbps storage estimate.
+3. Enter an existing absolute folder on the Forge host (e.g. D:\Archive).
+4. Click START ARCHIVE; keep Forge running. Click STOP DOWNLOAD to cancel.
+5. Repeat a download to resume and skip IDs in downloaded-ids.txt.
+
+Saves video files, info JSON, thumbnails, descriptions, playlist-info.json.
+For Plex/Jellyfin/Emby, use a Home Videos or mixed-content library; provider-specific
+metadata recognition is not guaranteed. A future release can add .nfo export.
+
+Security: Archive APIs are localhost-only because they write to disk. Access
+from another computer via the LAN IP is intentionally blocked.
+YouTube may require verification or block requests. No bypasses are included.
+Estimates are rough; actual sizes depend on available formats and quality.
+The 1.2.4c subtitle issues remain unresolved.
+This is a source ZIP, not a prebuilt Windows executable. Use Build Windows EXE.bat.

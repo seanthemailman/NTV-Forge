@@ -21,17 +21,13 @@ try {
   if (!(Test-Path (Join-Path $tools 'yt-dlp.exe'))) {
     Download 'https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe' (Join-Path $tools 'yt-dlp.exe')
   } else { Write-Host 'yt-dlp already downloaded; skipping.' }
-  # yt-dlp needs a JavaScript runtime for reliable YouTube extraction.
-  # Deno is standalone on Windows; place deno.exe beside yt-dlp.exe.
   if (!(Test-Path (Join-Path $tools 'deno.exe'))) {
-    $denoUrl = 'https://github.com/denoland/deno/releases/latest/download/deno-x86_64-pc-windows-msvc.zip'
-    Download $denoUrl (Join-Path $stage 'deno.zip')
-    $denoExtract = Join-Path $stage 'deno'
-    Expand-Archive (Join-Path $stage 'deno.zip') $denoExtract -Force
-    $deno = Get-ChildItem $denoExtract -Filter 'deno.exe' -Recurse | Select-Object -First 1
-    if (!$deno) { throw 'deno.exe missing from Deno archive' }
-    Copy-Item $deno.FullName (Join-Path $tools 'deno.exe') -Force
-  } else { Write-Host 'Deno already downloaded; skipping.' }
+    Download 'https://github.com/denoland/deno/releases/latest/download/deno-x86_64-pc-windows-msvc.zip' (Join-Path $stage 'deno.zip')
+    Expand-Archive (Join-Path $stage 'deno.zip') (Join-Path $stage 'deno') -Force
+    $dn = Get-ChildItem (Join-Path $stage 'deno') -Filter 'deno.exe' -Recurse | Select-Object -First 1
+    if (!$dn) {throw 'deno.exe missing from download'}
+    Copy-Item $dn.FullName (Join-Path $tools 'deno.exe') -Force
+  }
   $release = Invoke-RestMethod 'https://api.github.com/repos/streamlink/windows-builds/releases/latest' -Headers @{'User-Agent'='NTV-Forge-Portable-Builder'}
   Write-Host ('Streamlink release assets: ' + (($release.assets | ForEach-Object { $_.name }) -join ', '))
   $asset = $release.assets | Where-Object { $_.name -match '(?i)\.zip$' -and $_.name -match '(?i)(x86_64|amd64|win64)' -and $_.name -notmatch '(?i)(arm64|aarch64|source)' } | Select-Object -First 1

@@ -1,0 +1,18 @@
+NTV Forge 1.2.1h — Final encoder diagnostic test
+
+This release retains the 1.2.1g Classic HLS configuration.
+
+NEW: Encoder selector in the compact top header:
+ AUTO: Intel Quick Sync, falling back to software if QSV fails at startup.
+ QUICK SYNC: Intel QSV only.
+ SOFTWARE: libx264 only.
+
+IMPORTANT: Changing the encoder does not interrupt a running stream. Stop playback, wait for the old HLS session to time out (or restart Forge), then start playback again. For controlled tests, restart Forge between encoder modes.
+
+NEW: FFmpeg -progress data sampled approximately every 10 seconds in forge-diagnostics.log: frame, fps, speed, and other available fields. Download diagnostics from the existing UI. Note that FFmpeg's speed can be close to 1.0x because -re intentionally paces input. A steady 1.0x does NOT prove encoder headroom. The progress data helps identify falling behind, not precisely measure maximum encode capacity.
+
+Run the same long video at the same resolution with one viewer, comparing QSV and SOFTWARE. Keep separate diagnostics for each test.
+
+The software encoder can increase CPU usage substantially. If it overloads the host, stop the stream.
+
+This is a source + Windows EXE builder ZIP, not a prebuilt executable. Copy your working tools directory or use the included portable tools installer.

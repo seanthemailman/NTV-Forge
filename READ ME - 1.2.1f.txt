@@ -1,0 +1,22 @@
+NTV Forge 1.2.1f — Multi-viewer HLS Diagnostics Test
+
+This is a targeted test build based on the compact-header 1.2.1e release.
+
+Changes:
+- HTTP listen backlog increased to 128; threaded requests remain enabled.
+- Classic HLS playlist window increased to 24 x 2-second segments, with 48 extra retained segments for slow viewers.
+- Logs slow HLS requests (150ms+), missing segments, segment read errors, and sampled manifest delivery to the Download Diagnostic Report ZIP.
+- YouTube cooldown, XMLTV, and compact sticky terminal are preserved.
+- Experimental Continuous HLS is still available in settings, but DO NOT use it for this test.
+
+TEST:
+1. Extract to a NEW folder; keep the working Forge installation untouched.
+2. Copy the complete tools folder from the existing working installation.
+3. Run Build Windows EXE.bat and launch the new executable.
+4. Choose Classic HLS and a single long-form YouTube channel.
+5. Start VLC alone for 2 minutes, then join with NTV for 2 minutes.
+6. Download Diagnostic Report and share it, noting when NTV joined and whether VLC stuttered.
+
+This is NOT a confirmed fix. The additional logging is designed to distinguish HTTP request latency, missing segments, and live-edge buffering.
+Diagnostic ZIPs may contain LAN IP addresses and local file paths; review before sharing publicly.
+Portable tools binaries are not bundled in this ZIP.

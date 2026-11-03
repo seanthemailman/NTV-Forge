@@ -1,0 +1,5 @@
+NTV Forge
+Project direction, design and testing: Sean
+AI-assisted code collaboration: Aether (ChatGPT)
+
+Hidden credit: hover over the television logo in the Forge header.

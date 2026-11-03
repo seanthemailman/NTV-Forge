@@ -1,0 +1,7 @@
+NTV Forge 1.2.4 — Automatic Captions
+
+Single-video YouTube channels exported through /channels.m3u now use the proven /subtitle-live/<id>/master.m3u8 route. English captions appear automatically when available. If unavailable, the master playlist still serves video. Twitch, playlist, direct URLs and video encoding remain unchanged.
+
+IMPORTANT: NTV channels imported previously with /hls/<id>/index.m3u8 need their stream URL refreshed/reimported to get the new master playlist. Existing /subtitle-live/ URLs still work. Playlist caption switching is not included.
+
+Keep 1.2.3b as your backup. Rebuild using Build Windows EXE.bat and use the new /channels.m3u URL in NTV. Test a captioned single video across a loop, an uncaptioned single video, and a Twitch channel.

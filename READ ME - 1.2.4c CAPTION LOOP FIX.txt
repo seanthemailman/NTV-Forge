@@ -1,0 +1,20 @@
+NTV Forge 1.2.4c — Caption Loop & Console Fix (TEST BUILD)
+
+Changes:
+- Hide ffprobe subprocess windows on Windows. This process runs in the background even when captions are off.
+- Mark FFmpeg clip/loop boundaries as HLS discontinuities in the served video and caption playlists.
+- Include HLS discontinuity sequence counters after boundaries slide out of the live playlist.
+- Retain 1.2.4b YouTube URL caching and 1.2.4a timestamp sampling.
+
+Install:
+1. Stop Forge and back up your previous 1.2.4b folder.
+2. Extract this ZIP to its own folder.
+3. Copy your existing tools folder and channel configuration (if stored in the prior folder) into this new folder.
+4. Run Build Windows EXE.bat if you use the compiled executable.
+5. Test the short YouTube video: start playback, wait 2 minutes, enable subtitles, and allow two loops.
+6. Export diagnostics if subtitles lag or vanish again.
+
+Notes:
+- This is a targeted code fix, NOT a verified Windows playback test.
+- Video/caption continuity is client-dependent. If subtitle timing still drifts, the next step is comparing actual cue times with player timestamps.
+- Existing HLS encoder and Quick Sync settings were not changed.

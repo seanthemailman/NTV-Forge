@@ -1,0 +1,26 @@
+NTV FORGE 1.2.3a - REAL CAPTION TIMING DIAGNOSTICS
+
+WHAT CHANGED
+- The live WebVTT caption generator now tracks observed HLS EXTINF segment durations instead of assuming every segment is precisely 4.0 seconds.
+- Added a browser-readable JSON caption preview at /subtitle-preview/CHANNEL-ID.
+- Added caption_segment diagnostic events (segment number, calculated start/end, cue count, missing historical segment durations).
+- Added caption_playlist diagnostic events.
+- Streaming encoder and HLS configuration are unchanged from 1.2.3.
+
+IMPORTANT LIMITATIONS
+- This is a timing experiment, not a confirmed fix. HLS transport timestamps can differ from nominal elapsed segment durations.
+- The preview displays caption text even if NTV's player does not render it.
+- Missing historical segment durations are estimated at 4 seconds and reported as missing_history.
+- Captions only support single YouTube videos, not playlists.
+- For best timeline reconstruction, launch the subtitle-live channel at the start of the video and let it run continuously.
+
+TEST
+1. Extract into a separate folder; copy the existing tools folder from your working installation.
+2. Run Build Windows EXE.bat and launch Forge.
+3. Play your known-captioned single-video channel in NTV with the existing /subtitle-live/CHANNEL-ID/master.m3u8 address.
+4. Select English (Forge) in NTV and let it run 1-2 minutes.
+5. In a browser on the Forge PC, open http://localhost:8765/subtitle-preview/CHANNEL-ID (replace CHANNEL-ID).
+6. Check total_cues, sample_cues and segments[].matching_cues. Save the JSON page and Forge diagnostics ZIP for comparison.
+7. If subtitles still do not show, report whether matching_cues is > 0 for current segments.
+
+Keep your old build as a backup. This build has not been tested on Windows or in NTV.

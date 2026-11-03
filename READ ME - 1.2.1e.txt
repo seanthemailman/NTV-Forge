@@ -1,0 +1,10 @@
+NTV Forge 1.2.1e — YouTube protection and XMLTV test
+
+- YouTube source verification is MANUAL ONLY (use Refresh on each source).
+- Shared 30-minute in-memory cooldown after YouTube bot-verification error; stops further yt-dlp calls during cooldown. Restarting Forge resets this guard, not YouTube's restriction. Do not use restart to repeatedly test.
+- XMLTV at /epg.xml, /guide.xml and /xmltv.xml now includes generic continuous-programming entries for each channel (not actual title schedules).
+- M3U advertises /epg.xml.
+- Wider green system monitor remains in fixed top banner.
+- Keep a backup and build in a separate folder. Copy your existing populated tools folder before running Build Windows EXE.bat.
+- The tools folder in this ZIP contains installer instructions, not the third-party binaries.
+- Playback on Windows/NTV has not been tested.

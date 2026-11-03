@@ -1,0 +1,14 @@
+NTV Forge 1.2.1 DIAGNOSTICS TEST (SOURCE / WINDOWS BUILDER)
+
+This is a diagnostic test build, not a precompiled Windows executable.
+Build on Windows using Build Windows EXE.bat from an existing Forge build workspace with the portable tools present.
+
+Changes:
+- Records source resolution success/failure and FFmpeg exit codes and stderr in forge-diagnostics.log.
+- Adds Download Diagnostic Report to Link Forge Saved Sources.
+- GET /api/diagnostics downloads a ZIP with diagnostic events, tool presence, and version.
+
+PRIVACY: Reports attempt to redact URLs; inspect the ZIP before posting publicly.
+IMPORTANT: Back up project.json and playlist-progress.json before replacing any build.
+Do not replace your working Forge installation until this build has been tested separately.
+No Twitch playback fix is claimed yet. This build is intended to reveal the actual error.

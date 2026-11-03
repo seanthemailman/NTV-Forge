@@ -1,0 +1,22 @@
+NTV Forge 1.2.4a — Late Subtitle Synchronization (experimental)
+
+Changes relative to 1.2.4:
+- Corrected diagnostic version identifier.
+- WebVTT subtitle segments now carry an X-TIMESTAMP-MAP mapping their
+  cue times to the actual MPEG-TS presentation timestamp for that segment.
+- FFprobe reads each requested segment's transport clock, cached per session.
+- A lightweight background sampler captures each clip's initial transport
+  timestamp even if captions are switched off until several minutes later.
+- Actual transport timing is preferred over reconstructed segment durations.
+- Diagnostics now report the timing source, MPEG-TS timestamp and map status.
+- No changes to the FFmpeg encoder configuration, HLS video muxer, UI or
+  channel export behavior.
+
+Test: Start a captioned YouTube channel with subtitles OFF. Enable captions
+3-5 minutes later. Check alignment, then let the video loop and repeat.
+Also test captions enabled from the start. Send diagnostics if either fails.
+
+This is a test build. It has passed Python syntax compilation and ZIP integrity
+checks, but has NOT been tested on your Windows/NTV installation.
+
+Keep your 1.2.3b and 1.2.4 folders as backups.

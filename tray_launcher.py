@@ -30,12 +30,9 @@ if sys.stdout is None: sys.stdout=_LogStream(logging.INFO)
 if sys.stderr is None: sys.stderr=_LogStream(logging.ERROR)
 
 def icon_image():
-    im=Image.new('RGBA',(64,64),(23,34,38,255))
-    d=ImageDraw.Draw(im)
-    d.rounded_rectangle((6,9,58,54),radius=8,fill=(218,179,103),outline=(243,225,180),width=3)
-    d.rectangle((14,18,49,44),fill=(19,44,36),outline=(49,100,68),width=2)
-    d.rectangle((19,23,44,39),fill=(116,206,121))
-    return im
+    path=Path(getattr(sys,'_MEIPASS',Path(__file__).resolve().parent))/'forge-logo-small.png'
+    try:return Image.open(path).convert('RGBA').resize((64,64),Image.Resampling.LANCZOS)
+    except Exception:return Image.new('RGBA',(64,64),(24,40,44,255))
 
 def main():
     try:
@@ -62,7 +59,7 @@ def main():
         icon.stop()
         httpd.shutdown()
         httpd.server_close()
-    icon=pystray.Icon('ntv-forge',icon_image(),'NTV Forge 1.0',menu=pystray.Menu(
+    icon=pystray.Icon('ntv-forge',icon_image(),'NTV Forge 1.3.2',menu=pystray.Menu(
         pystray.MenuItem('Open NTV Forge',open_ui,default=True),
         pystray.MenuItem('Copy M3U Playlist URL',copy_playlist),
         pystray.Menu.SEPARATOR,

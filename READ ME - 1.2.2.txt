@@ -1,0 +1,29 @@
+NTV FORGE 1.2.2 — STABLE STREAMING + OPT-IN SUBTITLE COMPATIBILITY PROBE
+
+STREAMING
+- Classic HLS (4-second segments, 8-item manifest), Quick Sync preferred, software fallback.
+- Preserves existing playlists, XMLTV, source protection, diagnostics, and user interface.
+- Encoder selector remains available for troubleshooting; AUTO is recommended.
+- No new streaming optimizations. No experimental continuous muxer.
+
+SUBTITLE TEST (NOT PRODUCTION SUBTITLE SUPPORT)
+The new endpoint creates a test HLS master manifest that advertises a separate
+WebVTT subtitle track. It does NOT obtain actual subtitles from YouTube.
+
+1. Create or identify an existing Link Forge YouTube channel.
+2. Copy the channel ID from the /hls/<CHANNEL-ID>/index.m3u8 address.
+3. Open the regular stream first and let it generate segments.
+4. Import the following URL as a temporary live stream in NTV:
+   http://YOUR-FORGE-PC-IP:8765/subtitle-test/CHANNEL-ID/master.m3u8
+5. Check whether NTV displays a selectable subtitle track called
+   "Forge Subtitle Test". If available, enable it and look for the test text.
+6. Report whether the subtitle menu appears and whether text is visible.
+
+This probe uses approximate 4-second subtitle timestamps and is intended to
+check HLS/WebVTT track discovery, NOT production caption timing or accuracy.
+If NTV does not expose the track, it may need player-side subtitle support.
+Do not replace your working NTV channel URL with the test URL permanently.
+
+BUILD
+Copy your existing tools folder into this folder, then run
+"Build Windows EXE.bat". Keep your old installation as a backup.

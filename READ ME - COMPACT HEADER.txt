@@ -1,0 +1,9 @@
+NTV Forge 1.2.1e — Compact Header UI Patch
+
+This package retains the 1.2.1e YouTube cooldown and XMLTV changes, but changes the sticky header to a compact, single-row layout: logo/title | terminal | Link Forge and Channel Forge buttons.
+
+The terminal stays visible and scrollable; the main interface gets more vertical space.
+
+This is a layout-only update; no streaming or server behavior was changed.
+
+As with prior source-builder ZIPs, copy your complete tools folder from your working installation before building.

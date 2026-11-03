@@ -1,0 +1,19 @@
+NTV Forge 1.2.3b — caption loop continuity
+
+Changes:
+- Caption timestamps now reset at recorded FFmpeg clip boundaries while HLS segment numbering continues.
+- New caption_clip_boundary and clip_sequence diagnostic fields.
+- Clears cached segment timing and clip boundaries when a new HLS session starts.
+- Keeps video encoder and HLS settings unchanged.
+
+Scope: Single YouTube video captions via /subtitle-live/<channel-id>/master.m3u8.
+Playlist-specific per-video captions are NOT implemented in this build.
+
+TEST:
+1. Stop the previous Forge instance.
+2. Extract this archive into its own folder, copy your existing tools folder, and run Build Windows EXE.bat.
+3. Start Forge and open your existing /subtitle-live/ NTV channel.
+4. Enable English (Forge), watch beyond the video's first full loop, and verify subtitles restart.
+5. If captions fail, export diagnostics and note whether video restarted at the same moment.
+
+Validation: Python syntax and isolated caption boundary test passed. Live Windows/NTV playback not tested.

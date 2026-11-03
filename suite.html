@@ -132,4 +132,159 @@ nav button, .actions > button, .flex > div > button, #exportBtn, .csv-picker-but
 /* Keep long labels readable and prevent letter spacing from clipping them. */
 button, .csv-picker-button {white-space:normal; overflow-wrap:break-word;}
 
-</style></head><body><header><div class="brand"><div class="mark" aria-hidden="true">▣</div><div><div class="eyebrow">NOSTALGIATV / COMPANION SYSTEM</div><h1>NTV <span>FORGE</span></h1><div class="sub">RETRO TERMINAL · VERSION 0.5.3</div></div></div><div class="right"><div class="signal"><span class="led"></span>LOCAL UI / READY</div><nav aria-label="Forge workspaces"><button id="linkTab" aria-selected="true" onclick="switchTab('link')">01 / LINK FORGE</button><button id="channelTab" aria-selected="false" onclick="switchTab('channel')">02 / CHANNEL FORGE</button></nav></div></header><iframe id="linkFrame" title="Link Forge" src="/link"></iframe><iframe id="channelFrame" title="Channel Forge" src="/forge" hidden></iframe><script>function switchTab(which){const link=which==='link';document.getElementById('linkFrame').hidden=!link;document.getElementById('channelFrame').hidden=link;document.getElementById('linkTab').setAttribute('aria-selected',String(link));document.getElementById('channelTab').setAttribute('aria-selected',String(!link));history.replaceState(null,'',link?'#link':'#channel')}switchTab(location.hash==='#channel'?'channel':'link');</script></body></html>
+</style><style>
+/* Header remains visible because the two workspaces scroll inside iframes. */
+header{position:relative;z-index:5;min-height:118px}
+.terminal{background:#06100a;border:2px solid #4b7854;border-radius:4px;width:560px;max-width:47vw;height:96px;flex-shrink:1;padding:7px 10px;box-shadow:inset 0 0 20px #1c552e65,0 0 8px #60c87930;color:#7fff96;font:11px/1.35 Consolas,'Courier New',monospace;text-shadow:0 0 5px #70ef8a8c;overflow:hidden;position:relative}
+.terminal:after{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(transparent 0 3px,#0003 3px 4px)}
+.terminal-label{font-weight:bold;letter-spacing:.06em;border-bottom:1px solid #2b643c;padding-bottom:4px;margin-bottom:3px;white-space:nowrap}
+.terminal-lines{height:56px;overflow:auto;scrollbar-width:thin;scrollbar-color:#397b48 #06100a}
+.terminal-lines div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.terminal-cursor{float:right;animation:cursorblink 1.1s steps(1) infinite}
+@keyframes cursorblink{50%{opacity:0}}
+@media(max-width:1000px){header{gap:10px}.terminal{width:370px;max-width:100%;height:82px}.terminal-lines{height:42px}}
+@media(max-width:700px){.right{width:100%;justify-content:center}.terminal{width:100%;max-width:100%}header{padding:10px 12px}iframe{height:calc(100vh - 230px)}}
+/* 1.2.1e compact header layout: logo | monitor | navigation */
+header{position:sticky;top:0;z-index:100;display:flex;flex-wrap:nowrap;justify-content:initial;align-items:center;gap:18px;padding:8px 16px;min-height:0;height:86px}
+.brand{flex:0 0 auto;min-width:260px;gap:11px}
+.mark{font-size:20px;padding:6px 9px}
+.eyebrow{font-size:9px}
+h1{font-size:23px}
+.sub{font-size:10px;margin-top:3px}
+.right{display:flex;flex:1 1 auto;min-width:0;align-items:center;justify-content:space-between;flex-wrap:nowrap;gap:14px}
+.terminal{flex:1 1 auto;width:auto;max-width:none;min-width:180px;height:65px;padding:5px 9px;font-size:10px}
+.terminal-label{padding-bottom:2px;margin-bottom:2px}
+.terminal-lines{height:35px}
+nav{flex:0 0 auto;display:flex;flex-wrap:nowrap;gap:7px}
+nav button{min-width:0!important;padding:10px 12px!important;white-space:nowrap;font-size:11px}
+iframe{height:calc(100vh - 86px)}
+@media(max-width:1000px){header{gap:10px;padding:7px 10px;height:82px}.brand{min-width:220px}.terminal{width:auto;max-width:none;height:61px}.terminal-lines{height:31px}.right{width:auto;justify-content:space-between;gap:8px}nav button{padding:8px!important;font-size:10px}iframe{height:calc(100vh - 82px)}}
+@media(max-width:700px){header{height:76px;gap:6px;padding:6px}.brand{min-width:0;flex:0 1 150px;gap:5px}.mark{display:none}.eyebrow{font-size:7px;letter-spacing:0}.brand h1{font-size:16px;letter-spacing:0}.sub{font-size:8px}.right{flex:1;min-width:0;gap:5px}.terminal{min-width:0;height:57px;padding:4px;font-size:9px}.terminal-lines{height:28px}nav{flex-direction:column;gap:3px}nav button{flex:none!important;padding:4px 6px!important;font-size:8px}iframe{height:calc(100vh - 76px)}}
+ .encoder-control{display:flex;flex-direction:column;gap:3px;color:#a5e6a1;font:700 9px Consolas,monospace;white-space:nowrap}.encoder-control select{font:700 11px Consolas,monospace;padding:5px;border:1px solid #537866;border-radius:3px;max-width:120px}
+</style><style>
+/* 1.3.1 responsive three-zone header */
+header{height:auto!important;min-height:88px!important;flex-wrap:wrap!important;gap:12px!important}
+.brand{min-width:220px!important}.right{min-width:min(650px,100%)!important;gap:12px!important;flex-wrap:wrap!important}
+.right .terminal{min-width:260px!important;flex:1 1 280px!important;cursor:pointer}
+.right nav{flex:0 0 auto!important;flex-wrap:wrap!important;gap:5px!important}
+.right nav button{padding:9px!important;font-size:10px!important}
+.link-encoder-bar{background:#101e20;border-bottom:1px solid #3c6860;padding:7px 22px;display:flex;justify-content:flex-end}
+.link-encoder-bar[hidden]{display:none!important}.link-encoder-bar .encoder-control{flex-direction:row;align-items:center;gap:10px}
+#monitorExpanded{background:#071615;color:#8ef5b3;border:1px solid #4eab87;padding:14px 22px;font:12px Consolas,monospace}
+#monitorExpanded[hidden]{display:none!important}.expanded-head{display:flex;justify-content:space-between;color:#9efbc1;font-weight:bold;margin-bottom:12px}
+.expanded-head button{background:#143b31;border:1px solid #70cba2;color:#c9ffe0;padding:5px 12px;cursor:pointer}
+#monitorHistory{height:180px;overflow:auto;background:#081211;padding:12px;white-space:pre-wrap;line-height:1.6}
+.monitor-command{margin-top:10px;border-top:1px solid #376b57;padding-top:10px}.monitor-command small{float:right;opacity:.6}
+iframe{height:calc(100vh - 150px)!important;min-height:560px}
+@media(max-width:1100px){.right{width:100%!important}.brand{min-width:0!important}}
+
+/* 1.3.2 pixel-art branding, command console, responsive unlock slot */
+.forge-brand-logo{height:68px;width:68px;object-fit:contain;flex:none;image-rendering:pixelated}
+.forge-right-logo{height:65px;width:65px;object-fit:contain;image-rendering:pixelated}
+#archiveUnlockSlot{display:flex;align-items:center;justify-content:center;min-width:65px}
+#archiveUnlockSlot[hidden]{display:none!important}
+#monitorExpanded:not([hidden]){position:sticky;top:0;z-index:90;box-shadow:0 8px 24px #000a}
+#forgeAchievement[hidden]{display:none!important}
+#archiveTab[hidden]{display:none!important}
+#forgeCommand{background:#071311;color:#baffd3;border:1px solid #579a78;font:14px Consolas,monospace;padding:8px;width:min(360px,65%);outline-color:#a1ffbf}
+.monitor-command{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.monitor-command small{float:none}
+#forgeAchievement{color:#9afad3;font:bold 16px Consolas,monospace;text-align:center;white-space:pre-wrap;letter-spacing:2px}
+#forgeAchievement.unlocked{animation:achievementGlow .35s steps(2) 6;text-shadow:0 0 12px #5cffaa}
+@keyframes achievementGlow{50%{color:#fff;background:#176448}}
+@media(max-width:780px){.forge-brand-logo{height:50px;width:50px}.forge-right-logo{height:45px;width:45px}#archiveUnlockSlot{min-width:45px}}
+
+/* 1.3.2c: stable three-column header, independent of event refreshes. */
+header{display:grid!important;grid-template-columns:minmax(225px,auto) minmax(0,1fr)!important;align-items:center!important;gap:14px!important;flex-wrap:nowrap!important;height:94px!important;min-height:94px!important;max-height:94px!important;padding:8px 16px!important;overflow:visible!important}
+header .brand{min-width:0!important;max-width:100%;white-space:nowrap;overflow:hidden}
+header .brand>div{min-width:0}
+header .brand .sub{overflow:hidden;text-overflow:ellipsis}
+header .right{width:100%!important;min-width:0!important;display:grid!important;grid-template-columns:minmax(150px,1fr) max-content!important;gap:10px!important;flex-wrap:nowrap!important;align-items:center!important}
+header .right .terminal{width:100%!important;min-width:0!important;max-width:none!important;flex:none!important;height:65px!important;overflow:hidden!important}
+header .right nav{display:flex!important;flex-wrap:nowrap!important;min-width:0!important;white-space:nowrap;gap:5px!important}
+header .right nav button{white-space:nowrap!important;padding:9px 10px!important;font-size:10px!important}
+header .right nav #archiveUnlockSlot{flex:none}
+#monitorExpanded:not([hidden]){position:fixed!important;top:94px!important;left:0;right:0;z-index:110!important;max-height:min(65vh,540px);overflow:auto;box-shadow:0 12px 30px #000b}
+iframe{height:calc(100vh - 136px)!important;min-height:400px!important}
+@media(max-width:1100px){header{grid-template-columns:minmax(160px,240px) minmax(0,1fr)!important;gap:8px!important;padding:6px 9px!important}header .right{gap:5px!important}header .right nav button{padding:8px 6px!important;font-size:9px!important}.forge-brand-logo{height:53px;width:53px}.forge-right-logo{height:43px;width:43px}#archiveUnlockSlot{min-width:43px!important}}
+@media(max-width:760px){header{grid-template-columns:minmax(115px,155px) minmax(0,1fr)!important;height:86px!important;min-height:86px!important;max-height:86px!important}header .right{grid-template-columns:minmax(85px,1fr) max-content!important}header .right nav button{font-size:8px!important;padding:7px 4px!important}header .right .terminal{height:57px!important}.forge-brand-logo{height:35px;width:35px}.forge-right-logo{height:30px;width:30px}#archiveUnlockSlot{min-width:30px!important}#monitorExpanded:not([hidden]){top:86px!important}iframe{height:calc(100vh - 128px)!important}}
+</style></head><body><header><div class="brand"><img class="forge-brand-logo" src="/forge-logo-small.png" alt="NTV Forge pixel-art television" title="Forged with Aether · imagined with Sean"><div><div class="eyebrow">NOSTALGIATV / COMPANION SYSTEM</div><h1>NTV <span>FORGE</span></h1><div class="sub">RETRO TERMINAL · VERSION 1.3.2c · HEADER HOTFIX</div></div></div><div class="right"><div class="terminal" tabindex="0" role="button" aria-expanded="false" aria-label="Expand Forge system monitor" onclick="toggleMonitor()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleMonitor()}"><div class="terminal-label"><span class="led"></span>FORGE SYSTEM MONITOR <span class="terminal-cursor">█</span></div><div class="terminal-lines" id="terminalLines" role="log" aria-live="off"><div>&gt; SYSTEM ONLINE</div></div></div><nav aria-label="Forge workspaces"><button id="linkTab" aria-selected="true" onclick="switchTab('link')">01 / LINK FORGE</button><button id="channelTab" aria-selected="false" onclick="switchTab('channel')">02 / CHANNEL FORGE</button><span id="archiveUnlockSlot"><img src="/forge-logo-small.png" class="forge-right-logo" alt="Pixel-art television"></span><button id="archiveTab" hidden aria-selected="false" onclick="switchTab('archive')">03 / ARCHIVE FORGE</button></nav></div></header><div id="linkEncoderBar" class="link-encoder-bar"><label class="encoder-control" title="Choose the encoder for newly started streams">ENCODER <select id="encoderMode" aria-label="Streaming encoder"><option value="auto">AUTO</option><option value="qsv">QUICK SYNC</option><option value="software">SOFTWARE</option></select></label></div><div id="monitorExpanded" hidden><div class="expanded-head">▣ SYSTEM EVENT LOG <button onclick="toggleMonitor()">CLOSE ×</button></div><div id="monitorHistory"></div><div class="monitor-command"><label for="forgeCommand">FORGE&gt; </label><input id="forgeCommand" autocomplete="off" spellcheck="false" aria-label="Forge terminal input" maxlength="160" placeholder="_"><button id="forgeSubmit" type="button">ENTER ↵</button><button id="forgeReset" type="button" hidden>RESET ACHIEVEMENT</button><small>AWAITING INPUT</small></div><div id="forgeAchievement" hidden role="status" aria-live="polite"></div></div><iframe id="linkFrame" title="Link Forge" src="/link"></iframe><iframe id="channelFrame" title="Channel Forge" src="/forge" hidden></iframe><iframe id="archiveFrame" title="Archive Forge" data-src="/archive" hidden></iframe><script>function switchTab(which){if(which==='archive'&&!window.archiveUnlocked)which='link';const link=which==='link';const archive=which==='archive';document.getElementById('linkFrame').hidden=!link;document.getElementById('channelFrame').hidden=link||archive;document.getElementById('linkFrame').hidden=!link;document.getElementById('archiveFrame').hidden=!archive;document.getElementById('linkTab').setAttribute('aria-selected',String(link));document.getElementById('channelTab').setAttribute('aria-selected',String(!link&&!archive));document.getElementById('archiveTab').setAttribute('aria-selected',String(archive));if(archive){const f=document.getElementById('archiveFrame');if(!f.src)f.src=f.dataset.src;}document.getElementById('linkEncoderBar').hidden=!link;history.replaceState(null,'',link?'#link':archive?'#archive':'#channel')}switchTab(location.hash==='#channel'?'channel':'link');</script><script>
+function toggleMonitor(){const panel=document.getElementById('monitorExpanded'),opened=panel.hidden;panel.hidden=!opened;document.querySelector('.terminal').setAttribute('aria-expanded',String(opened));if(opened)document.getElementById('monitorHistory').scrollTop=999999}
+const terminalLines=document.getElementById('terminalLines');
+const seenEvents=new Set();
+function terminalAdd(message){
+ const div=document.createElement('div');div.textContent='> '+String(message).replace(/[\r\n]/g,' ').slice(0,110);
+ terminalLines.appendChild(div);const full=div.cloneNode(true);document.getElementById('monitorHistory').appendChild(full);const history=document.getElementById('monitorHistory');while(history.children.length>200)history.firstChild.remove();while(terminalLines.children.length>75)terminalLines.firstChild.remove();terminalLines.scrollTop=terminalLines.scrollHeight;
+}
+window.addEventListener('message',event=>{if(event.origin!==location.origin)return;if(event.data&&typeof event.data.forgeStatus==='string')terminalAdd(event.data.forgeStatus)});
+async function terminalPoll(){
+ try{const r=await fetch('/api/events',{cache:'no-store'});if(!r.ok)throw Error('offline');const payload=await r.json();
+ for(const e of payload.events||[]){const key=[e.time,e.event,e.channel,e.mode].join('|');if(seenEvents.has(key))continue;seenEvents.add(key);if(seenEvents.size>500)seenEvents.clear();
+ const label=String(e.event||'EVENT').replaceAll('_',' ').toUpperCase();terminalAdd((e.time?e.time+' ':'')+label+(e.channel?' / '+e.channel:''));}
+ }catch(e){/* The monitor must never interfere with playback. */}
+}
+terminalPoll();setInterval(terminalPoll,3000);
+const encoderMode=document.getElementById('encoderMode');
+fetch('/api/encoder').then(r=>r.json()).then(d=>{encoderMode.value=d.mode}).catch(()=>terminalAdd('> ENCODER STATUS UNAVAILABLE'));
+encoderMode.addEventListener('change',async()=>{try{const r=await fetch('/api/encoder',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mode:encoderMode.value})});if(!r.ok)throw Error(await r.text());terminalAdd('> ENCODER: '+encoderMode.value.toUpperCase()+' / STOP AND RESTART STREAM TO APPLY');}catch(e){terminalAdd('> ENCODER CHANGE FAILED: '+e.message)}});
+
+// Simulated terminal: no shell execution. Exact submitted sequence only.
+window.archiveUnlocked=false;
+const forgeInput=document.getElementById('forgeCommand');
+const forgeAchievement=document.getElementById('forgeAchievement');
+const archiveTab=document.getElementById('archiveTab');
+const archiveSlot=document.getElementById('archiveUnlockSlot');
+const resetAchievement=document.getElementById('forgeReset');
+function archiveUI(unlocked){
+ window.archiveUnlocked=!!unlocked;
+ archiveTab.hidden=!unlocked;archiveSlot.hidden=!!unlocked;archiveSlot.style.display=unlocked?'none':'';
+ resetAchievement.hidden=!unlocked;
+ if(!unlocked){document.getElementById('archiveFrame').removeAttribute('src');switchTab('link')}
+}
+function achievementSound(){
+ try{const AudioCtx=window.AudioContext||window.webkitAudioContext;if(!AudioCtx)return;
+ const ctx=new AudioCtx();[523.25,659.25,783.99,1046.5].forEach((hz,i)=>{
+ const osc=ctx.createOscillator(),gain=ctx.createGain(),t=ctx.currentTime+i*.12;
+ osc.type='square';osc.frequency.value=hz;gain.gain.setValueAtTime(.0001,t);
+ gain.gain.exponentialRampToValueAtTime(.07,t+.01);gain.gain.exponentialRampToValueAtTime(.0001,t+.13);
+ osc.connect(gain).connect(ctx.destination);osc.start(t);osc.stop(t+.15);
+ });setTimeout(()=>ctx.close(),1000)}catch(e){}
+}
+function addTerminalCommand(line){
+ const d=document.createElement('div');d.textContent='FORGE> '+line;
+ const history=document.getElementById('monitorHistory');history.appendChild(d);
+ while(history.children.length>200)history.firstChild.remove();history.scrollTop=history.scrollHeight;
+}
+async function submitForgeCommand(){
+ const input=forgeInput.value.slice(0,160),normalized=input.toUpperCase();
+ addTerminalCommand(input);forgeInput.value='';
+ if(normalized!=='↑↑↓↓←→←→BA'||window.archiveUnlocked)return;
+ try{const r=await fetch('/api/achievement',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'unlock',code:normalized})});
+ if(!r.ok)throw Error('Could not save achievement');
+ archiveUI(true);forgeAchievement.textContent='★ ACHIEVEMENT UNLOCKED ★\nPRESERVATIONIST\nARCHIVE FORGE ONLINE';
+ forgeAchievement.hidden=false;forgeAchievement.classList.add('unlocked');achievementSound();
+ addTerminalCommand('★ ACHIEVEMENT UNLOCKED: PRESERVATIONIST ★');
+ const banner=document.createElement('div');banner.className='achievement-banner';
+ banner.textContent='★ PRESERVATIONIST UNLOCKED ★';
+ banner.style.cssText='position:absolute;right:16px;top:100%;z-index:120;background:#082b22;color:#adffd1;border:2px solid #5cfaaf;padding:9px 14px;font:bold 12px Consolas,monospace;box-shadow:0 0 16px #34ffa066;pointer-events:none';
+ document.querySelector('header').appendChild(banner);
+ setTimeout(()=>{banner.remove();forgeAchievement.classList.remove('unlocked');forgeAchievement.hidden=true;},5000);
+ }catch(e){terminalAdd('ACHIEVEMENT SAVE FAILED: '+e.message)}
+}
+forgeInput.addEventListener('keydown',e=>{
+ const arrows={ArrowUp:'↑',ArrowDown:'↓',ArrowLeft:'←',ArrowRight:'→'};
+ if(arrows[e.key]){e.preventDefault();const start=forgeInput.selectionStart,end=forgeInput.selectionEnd;
+ forgeInput.setRangeText(arrows[e.key],start,end,'end');return;}
+ if(e.key==='Enter'){e.preventDefault();submitForgeCommand()}
+ if(e.key==='Escape'){e.preventDefault();forgeInput.value=''}
+});
+document.getElementById('forgeSubmit').onclick=submitForgeCommand;
+resetAchievement.onclick=async()=>{
+ if(!confirm('Lock Archive Forge again? Existing archives and sources will be preserved.'))return;
+ const r=await fetch('/api/achievement',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'reset'})});
+ if(r.ok){archiveUI(false);forgeAchievement.textContent='';forgeAchievement.hidden=true;terminalAdd('ARCHIVE FORGE LOCKED')}else terminalAdd('RESET FAILED');
+};
+fetch('/api/achievement',{cache:'no-store'}).then(r=>r.json()).then(d=>{
+ archiveUI(!!d.preservationist?.unlocked);
+ if(window.archiveUnlocked&&location.hash==='#archive')switchTab('archive');
+}).catch(()=>archiveUI(false));
+</script></body></html>
